@@ -1,7 +1,10 @@
 package sample.bean;
 
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
+@Component
 public class Game {
     private List<Player> list; // 플레이어 리스트 (스프링 공장을 통해서 생성 및 주입 받음)
 
@@ -15,7 +18,7 @@ public class Game {
         this.list = list;
     }
 
-    // 1. 생성자를 통한 주입
+    // 1. 생성자를 통한 주입 (컴포넌트 스캔에 필요)
     public Game(List<Player> list) {
         System.out.println("Game(List<Player> list) 생성자 실행!");
         this.list = list;

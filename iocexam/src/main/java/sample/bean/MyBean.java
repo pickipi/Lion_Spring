@@ -1,5 +1,8 @@
 package sample.bean;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class MyBean {
     private String name;
     private int count;

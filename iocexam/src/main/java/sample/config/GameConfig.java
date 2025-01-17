@@ -1,15 +1,18 @@
 package sample.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import sample.bean.Dice;
 import sample.bean.Game;
 import sample.bean.Player;
 
 import java.util.List;
-@PropertySource({"classpath:game.properties"})
 
+@Configuration
+@ComponentScan(basePackages = "sample")
+@PropertySource({"classpath:game.properties"})
 public class GameConfig {
     // 1. 생성자를 통한 주입
 //    @Bean
@@ -17,13 +20,13 @@ public class GameConfig {
 //        return new Dice(6);
 //    }
 
-    // 2. 설정자를 통한 주입
-    @Bean
-    public Dice dice(@Value("${face}") int face){
-        Dice dice = new Dice();
-        dice.setFace(face);
-        return dice;
-    }
+//    // 2. 설정자를 통한 주입
+//    @Bean
+//    public Dice dice(@Value("${face}") int face){
+//        Dice dice = new Dice();
+//        dice.setFace(face);
+//        return dice;
+//    }
 
 //    // 1. 생성자를 통한 주입
 //    // 1번 방법
@@ -51,23 +54,6 @@ public class GameConfig {
         return player;
     }
 
-    @Bean
-    public Player kim(Dice dice){
-//        Player player = new Player(dice); // 1. 생성자를 통한 주입
-        Player player = new Player();
-        player.setDice(dice); // 2. 설정자를 통한 주입
-        player.setName("-ㅡ김ㅡ-");
-        return player;
-    }
-
-    @Bean
-    public Player rock(Dice dice){
-//        Player player = new Player(dice); // 1. 생성자를 통한 주입
-        Player player = new Player();
-        player.setDice(dice); // 2. 설정자를 통한 주입
-        player.setName("-ㅡ락ㅡ-");
-        return player;
-    }
 
     // 1. 생성자를 통한 주입
 //    @Bean
