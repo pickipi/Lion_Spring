@@ -7,7 +7,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class IocexamApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(IocexamApplication.class, args);
-
-
 	}
 }

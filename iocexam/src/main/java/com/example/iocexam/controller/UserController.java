@@ -2,6 +2,8 @@ package com.example.iocexam.controller;
 
 import com.example.iocexam.domain.User;
 import com.example.iocexam.service.UserService;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -24,5 +26,16 @@ public class UserController {
         user.setPassword("1111");
 
         userService.joinUser(user);
+    }
+
+    @PostConstruct
+    public void init(){
+        // 해당 빈이 생성된 직후 이 메소드를 호출
+        System.out.println("빈이 생성된 직후 호출됨.. PostConstruct 실행!");
+    }
+
+    @PreDestroy
+    public void destory(){
+        System.out.println("빈이 소멸되기 전에 호출됨.. PreDestroy 실행!");
     }
 }
