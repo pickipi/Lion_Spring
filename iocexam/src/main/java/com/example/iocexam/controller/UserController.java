@@ -2,12 +2,16 @@ package com.example.iocexam.controller;
 
 import com.example.iocexam.domain.User;
 import com.example.iocexam.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 // UserService를 주입받음 (사용자의 요청을 처리하고 서비스 계층(UserService)에 전달)
+@Controller
 public class UserController {
     // 유저컨트롤러를 요청하면 UserService에 의존하고 있을 것
     private UserService userService;
 
+    @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }

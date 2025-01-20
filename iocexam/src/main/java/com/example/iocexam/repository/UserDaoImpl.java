@@ -1,10 +1,12 @@
 package com.example.iocexam.repository;
 
 import com.example.iocexam.domain.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 // 주입받지 않고 직접 구현체로 사용 (데이터 저장 및 처리를 담당)
+@Repository
 public class UserDaoImpl implements UserDao{
     @Override
     public User getUser(String email) {
