@@ -3,6 +3,7 @@ package com.example.iocexam.service;
 import com.example.iocexam.domain.User;
 import com.example.iocexam.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 // UserDao를 주입받음 (비즈니스 로직 수행 및 데이터 계층(UserDao) 호출)
@@ -10,8 +11,13 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService{
     private UserDao userDao;
 
+    // @Qualifier : 생성자에 특정 id의 Dao에게 의존성 주입을 해달라는 표기
+    public UserServiceImpl(@Qualifier("userDao") UserDao userDao) {
+        this.userDao = userDao;
+    }
+
     @Autowired
-    public void setUserDao(UserDao userDao) {
+    public void setUserDao(@Qualifier("userDao") UserDao userDao) {
         this.userDao = userDao;
     }
 
