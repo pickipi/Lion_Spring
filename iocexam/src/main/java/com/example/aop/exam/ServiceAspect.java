@@ -41,5 +41,17 @@ public class ServiceAspect {
         System.out.println("exception value : " + ex);
     }
 
+    // ProceedingJoinPoint : JoinPoint를 받아서 다음으로 넘겨주는 역할
+    @Around("pc()")
+    public String around(ProceedingJoinPoint pjp) throws Throwable{
+        System.out.println("Around :::::::::::::: 실제 메소드가 [실행되기 전] 해야할 일");
+
+        String value = (String)pjp.proceed(); // 이 proceed()를 호출해줘야지만 실제 Target의 메소드를 호출한다. -- 이 줄을 기준으로 윗 부분은 실제 메소드가 실행되기 전, 아랫 부분이 시점이 달라짐
+        System.out.println("Around :::::::::::::: 실제 메소드가 [실행된 후] 해야할 일");
+        value += "Test AOP Run!!";
+
+        return value;
+    }
+
     
 }
