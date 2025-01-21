@@ -27,5 +27,11 @@ public class ServiceAspect {
         System.out.println("After의 메소드 (after()) 실행 :::::::::::::: ");
     }
 
+    // After와의차이점은 After Returning은 예외발생 시 실행되지 않지만 After는 조인포인트 처리 완료 후 항상 실행
+    @AfterReturning(pointcut = "pc()", returning = "result")
+    public void afterReturning(JoinPoint joinPoint, Object result){ // result는 어떤 값이 올지 모르므로 Object타입으로 받음
+        System.out.println("AfterReturning 실행 :::::::::::::: " + joinPoint.getSignature().getName() + ", return value : " + result);
+    }
+
     
 }
