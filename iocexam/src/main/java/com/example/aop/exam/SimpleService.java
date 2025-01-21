@@ -14,6 +14,10 @@ public class SimpleService {
 
     public void hello(){
         System.out.println("SimpleService (hello()) 실행");
+
+//        if(1==1){ // 강제로 Exception을 발생시켜봄
+//            throw new RuntimeException();
+//        }
     }
 
     public void setName(String name){

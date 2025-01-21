@@ -33,5 +33,13 @@ public class ServiceAspect {
         System.out.println("AfterReturning 실행 :::::::::::::: " + joinPoint.getSignature().getName() + ", return value : " + result);
     }
 
+    // 예외가 발생함으로써 AfterReturning은 실행되지 않고 After는 실행됨을 알 수 있다.
+    // SimpleService.hello()에서 if(1==1) throw new RuntimeException()을 발생시켰다.
+    @AfterThrowing(value = "pc()", throwing = "ex")
+    public void afterThrowing(Throwable ex){
+        System.out.println("AfterThrowing 실행 :::::::::::::: ");
+        System.out.println("exception value : " + ex);
+    }
+
     
 }
