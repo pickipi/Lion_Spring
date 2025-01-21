@@ -53,5 +53,15 @@ public class ServiceAspect {
         return value;
     }
 
-    
+    @Before("execution(* setName(..)*")
+    public void beforeSetName(JoinPoint joinPoint){
+        System.out.println("beforeSetName ::::::::::");
+        System.out.println("target method name :::::::::: " + joinPoint.getSignature().getName());
+
+        Object[] args = joinPoint.getArgs();
+
+        for(Object object : args){
+            System.out.println("setName 메소드의 인자 :::::::::: " + object);
+        }
+    }
 }
