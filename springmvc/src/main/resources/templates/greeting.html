@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>greeting</title>
+</head>
+<body>
+    <h1 th:text=" 'Please Say Hello to [' + ${name} + '] and All the Global fans!'"></h1>
+    <footer th:include="common/footer :: footer">Footer content</footer>
+</body>
+</html>
