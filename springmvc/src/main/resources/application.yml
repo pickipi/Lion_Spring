@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: springmvc
+
+
+  messages:
+    encoding: UTF-8
+    cache-duration: 0
+

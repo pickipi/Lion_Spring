@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Variery example of Thymeleaf</title>
+</head>
+<body>
+  <!-- 변수 표현식 -->
+  <p>Username : <span th:text="${username}"></span></p>
+  <p>isAdmin : <span th:text="${isAdmin}"></span></p>
+
+  <!-- 선택 변수 표현식 -->
+  <div th:object="${languages}">
+    <p> <!--object로 배열을 얻어왔으므로 $대신 *을 사용하며 배열의 0번째 인덱스를 꺼내달라는 *{[0]} 를 사용한다.-->
+      Languages : <span th:text="*{[0]} + ', '"></span>
+      <span th:text="*{[1]} + ', '"></span>
+      <span th:text="*{[2]}"></span>
+    </p>
+  </div>
+
+  <!-- 메시지 표현식 -->
+  <p th:text="#{welcome.message}"></p>
+  <p th:text="#{product.name}"></p>
+
+  <!-- 링크 표현식 -->
+  <a th:href="@{/products}">상품페이지로 이동</a>
+
+  <!-- 리터럴 값 -->
+  <p th:text="'Welcome,[' + ${username} + ']!'"></p>
+
+  <!-- 조건에 따른 값 -->
+  <div th:if="${isAdmin}">
+    <p><span th:text="${username}"></span>은 관리자입니다. (true일때 출력)</p>
+  </div>
+  <div th:unless="${isAdmin}">
+    <p><span th:text="${username}"></span>은 관리자가 아닙니다. (false일때 출력)</p>
+  </div>
+
+</body>
+</html>
