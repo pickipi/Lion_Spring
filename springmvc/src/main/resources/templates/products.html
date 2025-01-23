@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>products</title>
+</head>
+<body>
+    <h1 th:text="${titleText}"></h1>
+    <header th:include="common/footer :: product_header"></header>
+    <ul>
+        <li th:each="product : ${products}" th:text="${product.id} + '번 진열대[' + ${product.name} + ']의 가격 : ' + ${product.price} + '원'"></li>
+    </ul>
+
+</body>
+</html>
