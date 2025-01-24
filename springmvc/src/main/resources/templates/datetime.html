@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>DateTime Exam</title>
+</head>
+<body>
+    <h1>날짜 출력기</h1>
+    <p>
+        현재 날짜 : <span th:text="${currentDate}"></span><br>
+        현재 날짜/시간 : <span th:text="${currentDateTime}"></span><br>
+        현재 날짜/시간(포맷버전) : <span th:text="${#temporals.format(currentDateTime, 'yyyy-MM-dd HH:mm:ss')}"></span><br>
+        현재 시간 : <span th:text="${currentTime}"></span><br>
+        현재 지역 날짜/시간 : <span th:text="${currentZonedDateTime}"></span>
+    </p>
+</body>
+</html>
