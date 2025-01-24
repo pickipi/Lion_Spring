@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입 기초 세팅</title>
+</head>
+<body>
+    <form th:action="@{/exam/submitForm}" th:object="${userForm}" method="post">
+        <!--<label>과 <input>을 연결하는데 id로 연결한다. input의 id가 username이면 label에서는 for에 그 id가 위치해야한다.-->
+        <label for="username">username</label>
+        <input type="text" th:field="*{username}" id="username"/>
+        <!--에러가 발생했을떄 메시지 출력을 보여줄 공간-->
+        <!--BindingResult로부터 꺼낼 것, 이 형식은 정해진 형식이며 에러가 발생했으면 true가 리턴될 것이다. 가져온 error를 th:errors를 이용해 출력해준다. *{username}에 해당하는 에러를 가져와서 출력해주는 부분인 것이다. 에러가 있으면 출력하고 에러가 없으면 출력하지 않는다. -->
+        <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+
+        <label for="password">password</label>
+        <input type="password" th:field="*{password}" id="password"/>
+        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
+        <button type="submit">제출하기</button>
+    </form>
+</body>
+</html>
