@@ -6,11 +6,15 @@
 </head>
 <body>
 <h1>쿠키 목록</h1>
-<ul>
-    <li th:each="cookie : ${cookies}">
-        <span th:text="${cookie}"></span>
-    </li>
-</ul>
+    <ul>
+        <li  th:each="cookie : ${cookies}">
+            <span th:text="${cookie}"></span>
+
+            <!--쿠키를 삭제할때는 이름만 필요
+            타임리프문법에서 substring사용을 할떄 cookie를 기준으로 '='를 만나면 잘라내서 그것을 cookieName으로 설정-->
+<!--            <a th:href="@{/cookieDelete(cookieName=${#strings.substringBefore(cookie, '=')})}">쿠키삭제</a>-->
+        </li>
+    </ul>
 <br>
 <a href="/cookieSetForm">쿠키 설정 페이지로 이동</a>
 </body>

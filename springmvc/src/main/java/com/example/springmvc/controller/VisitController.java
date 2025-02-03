@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // 쿠키에 대한 컨트롤러
 @Controller
 public class VisitController {
@@ -34,23 +37,32 @@ public class VisitController {
 
     @GetMapping("/cookieView")
     public String cookieView(HttpServletRequest request, Model model){
-        // 이 요청에서는 모든 쿠키를 보여주는 화면을 만듦
+        //이 요청에서는 모든 쿠키를 보여주는 화면을 만들어 주세요.
         Cookie[] cookies = request.getCookies();
+        List<String> cookieList = new ArrayList<>();
 
-        model.addAttribute("cookies", cookies);
+        if(cookies != null){
+            for (Cookie cookie : cookies){
+                System.out.print(cookie.getName() +":::");
+                System.out.println(cookie.getValue());
+                cookieList.add(cookie.getName()+"="+cookie.getValue());
+            }
 
-        // cookieview HTML의 타임리프에서 쿠키를 받아들이지 못하는 오류로 인한 테스트 for문
-//        for(Cookie cookie : cookies){
-//            System.out.println(cookie.getName() + " ::: ");
-//            System.out.println(cookie.getValue());
-//        }
+            model.addAttribute("cookies",cookieList);
+
+        }
         return "cookieview";
     }
 
     // 쿠키 삭제
     @GetMapping("/cookieDelete")
-    public String cookieDelete(){
+    public String cookieDelete(@RequestParam(name="cookieName") String cookieName,
+                               HttpServletResponse response){
 
+        Cookie cookie = new Cookie(cookieName, ""); // Value값을 주지 않음으로 delete기능 구현
+        cookie.setPath("/");
+        cookie.setMaxAge(0); // 생명주기를 0으로 줌으로써 delete기능 구현
+        response.addCookie(cookie);
         return "redirect:/cookieView";
     }
 
