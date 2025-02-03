@@ -1,15 +1,59 @@
 package com.example.springmvc.controller;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 // 쿠키에 대한 컨트롤러
 @Controller
 public class VisitController {
+    @GetMapping("/cookieSetForm")
+    public String cookieSetForm(){
+        // 해당 폼이 요청이 되면, 쿠키 이름과 쿠키 값을 받는 화면을 만듦
+        return "cookieset";
+    }
+
+    @GetMapping("/cookieSet")
+    public String cookieSet(@RequestParam(name = "cookieName") String cookieName,
+                            @RequestParam(name = "cookieValue") String cookieValue,
+                            HttpServletResponse response){
+        // 이 요청에서는 쿠키 이름과 쿠키 값을 받아서 쿠키를 저장하는 부분
+        Cookie cookie = new Cookie(cookieName, cookieValue);
+        cookie.setPath("/");
+        cookie.setMaxAge(7*24*60*60); // 7일 유지
+        response.addCookie(cookie); // 반드시 addCookie해주어야 "응답에 쿠키 추가"
+
+        // 쿠키가 저장되면 /cookieView로 리다이렉트되도록 구현
+        return "redirect:/cookieView";
+    }
+
+    @GetMapping("/cookieView")
+    public String cookieView(HttpServletRequest request, Model model){
+        // 이 요청에서는 모든 쿠키를 보여주는 화면을 만듦
+        Cookie[] cookies = request.getCookies();
+
+        model.addAttribute("cookies", cookies);
+
+        // cookieview HTML의 타임리프에서 쿠키를 받아들이지 못하는 오류로 인한 테스트 for문
+//        for(Cookie cookie : cookies){
+//            System.out.println(cookie.getName() + " ::: ");
+//            System.out.println(cookie.getValue());
+//        }
+        return "cookieview";
+    }
+
+    // 쿠키 삭제
+    @GetMapping("/cookieDelete")
+    public String cookieDelete(){
+
+        return "redirect:/cookieView";
+    }
+
     @GetMapping("/visit")
     public String showVisit(
             @CookieValue(name ="lastVisit", defaultValue = "N/A") String lastVisit,

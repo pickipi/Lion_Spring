@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>쿠키 설정 페이지</title>
+</head>
+<body>
+    <h1>🍪Cookie Test🍪</h1>
+    <form th:action="@{/cookieSet}" method="get">
+        <label for="cookieName">쿠키 이름</label>
+        <input type="text" id="cookieName" name="cookieName"/><br>
+
+        <label for="cookieValue">쿠키 값</label>
+        <input type="text" id="cookieValue" name="cookieValue"/><br>
+
+        <button type="submit">쿠키 저장</button>
+    </form>
+</body>
+</html>
