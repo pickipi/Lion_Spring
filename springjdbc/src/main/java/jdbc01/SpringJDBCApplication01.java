@@ -6,7 +6,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @SpringBootApplication
@@ -34,4 +37,15 @@ public class SpringJDBCApplication01 implements CommandLineRunner {
             System.out.println(user);
         }
     }
+
+    RowMapper<User> rowMapper = new RowMapper<User>() {
+        @Override
+        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new User(
+                    rs.getLong("id"),
+                    rs.getString("name"),
+                    rs.getString("email")
+            );
+        }
+    };
 }
