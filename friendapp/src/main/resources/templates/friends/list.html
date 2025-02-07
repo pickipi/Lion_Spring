@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Friend List</title>
+    <link rel="stylesheet" th:href="@{/css/friend.css}">
+</head>
+<body>
+    <h1>친구 목록</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>아이디</th>
+                <th>이름</th>
+                <th>이메일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="friend:${friends}">
+                <td th:text="${friend.id}"></td>
+                <td>
+                    <a th:href="@{/friends/{id}(id=${friend.id})}" th:text="${friend.name}"></a>
+                </td>
+                <td th:text="${friend.email}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+<a th:href="@{/friends/add}">친구등록</a> <!--친구등록 페이지로 바로가도록 하이퍼링크를 걸어줄 수 있음-->
+</body>
+</html>
