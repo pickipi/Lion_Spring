@@ -9,6 +9,7 @@
 <p th:text="${friend.email}"></p>
 
 <a th:href="@{/friends/list}">친구목록</a>
+<!--<a th:href="@{/friends/update/{id}(id=${friend.id})}">수정</a>-->
 <a th:href="@{/friends/update/{id}(id=${friend.id})}">수정</a>
 <a th:href="@{/friends/delete/{id}(id=${friend.id})}">삭제</a>
 </body>

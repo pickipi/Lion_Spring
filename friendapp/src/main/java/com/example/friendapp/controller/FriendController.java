@@ -44,17 +44,32 @@ public class FriendController {
         return "friends/detail";
     }
 
+//    // 친구수정 폼 보여주기
+//    @GetMapping("/update/{id}")
+//    public String updateForm(@PathVariable(name="id") Long id, Model model){
+//        model.addAttribute("friend", friendService.findFriendById(id));
+//        return "friends/updateForm";
+//    }
+//
+//    // 친구를 수정 - 수정할 정보를 가져와야함
+//    @PostMapping("/update/{id}")
+//    public String updateFriend(@PathVariable(name="id") Long id, @ModelAttribute Friend friend){
+//        // 여기서는 Service의 친구수정하는 메소드를 사용하면됨
+//        friend.setId(id);
+//        friendService.updateFriend(friend);
+//        return "redirect:/friends/list";
+//    }
+
     // 친구수정 폼 보여주기
     @GetMapping("/update/{id}")
-    public String updateForm(@PathVariable(name="id") Long id, Model model){
+    public String updateForm(@PathVariable("id") Long id, Model model){
         model.addAttribute("friend", friendService.findFriendById(id));
         return "friends/updateForm";
     }
 
     // 친구를 수정 - 수정할 정보를 가져와야함
     @PostMapping("/update/{id}")
-    public String updateFriend(@PathVariable(name="id") Long id, @ModelAttribute Friend friend){
-        // 여기서는 Service의 친구수정하는 메소드를 사용하면됨
+    public String updateFriend(@PathVariable("id") Long id, @ModelAttribute Friend friend){
         friend.setId(id);
         friendService.updateFriend(friend);
         return "redirect:/friends/list";

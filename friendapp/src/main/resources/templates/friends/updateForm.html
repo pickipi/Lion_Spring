@@ -6,14 +6,27 @@
 </head>
 <body>
 <h1>👀친구 수정</h1>
-<form th:action="@{/friends/update/{id}(id=${friend.id})}" method="post" th:object="${friend}">
-    <label for="name">이름 : </label>
-    <input type="text" id="name" th:field="*{name}" required/> <!--required : 필수로 입력되어야한다는 것-->
+<!--<form th:action="@{/friends/update/{id}(id=${friend.id})}" method="post" th:object="${friend}">-->
 
-    <label for="email">이메일 : </label>
-    <input type="text" id="email" th:field="*{email}" required/> <!--required : 필수로 입력되어야한다는 것-->
+<!--    <label for="name">이름 : </label>-->
+<!--    <input type="text" id="name" th:field="*{name}" required/> &lt;!&ndash;required : 필수로 입력되어야한다는 것&ndash;&gt;-->
 
-    <button type="submit">친구수정</button>
-</form>
+<!--    <label for="email">이메일 : </label>-->
+<!--    <input type="text" id="email" th:field="*{email}" required/> &lt;!&ndash;required : 필수로 입력되어야한다는 것&ndash;&gt;-->
+
+<!--    <button type="submit">친구수정</button>-->
+<!--</form>-->
+    <form th:action="@{/friends/update/{id}(id=${friend.id})}" method="post" th:object="${friend}">
+    <label>아이디 :  </label>
+    <input type="text" readonly th:field="*{id}"></input>>
+
+    <label>이름 : </label>
+    <input type="text" th:field="*{name}">
+
+    <label>이메일 : </label>
+    <input type="text" th:field="*{email}">
+
+    <button type="submit">친구정보수정</button>
+    </form>
 </body>
 </html>
