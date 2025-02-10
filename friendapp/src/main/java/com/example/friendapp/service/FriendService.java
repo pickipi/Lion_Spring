@@ -3,6 +3,10 @@ package com.example.friendapp.service;
 import com.example.friendapp.domain.Friend;
 import com.example.friendapp.repository.FriendRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +18,16 @@ public class FriendService {
     @Transactional(readOnly = true)
     public Iterable<Friend> findAllFriend(){
         return friendRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Friend> findAllFriend(Pageable pageable){
+        // 현재 원하는 페이지 번호가 무엇인지 얻어오는 것
+        // getPageSize() : 한 페이지에 몇개씩 가져올지 controller를 통해서 가져옴
+        Pageable pageable2 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
+
+        // pageable2로 정보를 얻은 후 friendRepository의 메소드 findAll에 전달
+        return friendRepository.findAll(pageable2);
     }
 
 

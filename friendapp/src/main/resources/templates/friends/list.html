@@ -8,7 +8,7 @@
 <body>
     <h1>친구 목록</h1>
 
-    <table>
+    <table th:if="${!friends.empty}">
         <thead>
             <tr>
                 <th>아이디</th>
@@ -27,6 +27,19 @@
         </tbody>
     </table>
 
-<a th:href="@{/friends/add}">친구등록</a> <!--친구등록 페이지로 바로가도록 하이퍼링크를 걸어줄 수 있음-->
+    <div th:if="${friends.totalPages > 1}">
+        <ul>
+            <!--numbers.sequence는 thymeleaf가 제공하는 정해진 문법
+            sequence를 가지고 1, 2, 3, 4, 5... 처럼 출력해주는 기능을 함
+            이처럼 이미 thymeleaf가 제공하는 자동 기능 문법이므로 totalPages까지 (1부터 시작해서) i에 값을 전달하게됨-->
+            <li th:each="i:${#numbers.sequence(1, friends.totalPages)}">
+                <!--page의 번호는 ${i}로 가져오는데 위에서 sequence를 통해 만들었던 i로 가져오는 것이다.
+                또한 이 페이지를 화면에 보여주기 위해서 text를 지정한다 (${i})-->
+                <a th:href="@{/friends/list(page=${i})}" th:text="${i}"></a>
+            </li>
+        </ul>
+    </div>
+
+    <a th:href="@{/friends/add}">친구등록</a> <!--친구등록 페이지로 바로가도록 하이퍼링크를 걸어줄 수 있음-->
 </body>
 </html>

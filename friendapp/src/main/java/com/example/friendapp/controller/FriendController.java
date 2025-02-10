@@ -3,6 +3,8 @@ package com.example.friendapp.controller;
 import com.example.friendapp.domain.Friend;
 import com.example.friendapp.service.FriendService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +14,25 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class FriendController {
     private final FriendService friendService;
-    @GetMapping("/list")
-    public String list(Model model){
-        // 해야할 일
-        model.addAttribute("friends", friendService.findAllFriend());
 
+    // 기존 : 바로 리스트를 보여줌
+//    @GetMapping("/list")
+//    public String list(Model model){
+//        // 해야할 일
+//        model.addAttribute("friends", friendService.findAllFriend());
+//
+//        return "friends/list";
+//    }
+
+    // 수정 : 페이지로 리스트를 보여주도록 처리
+    @GetMapping("/list")
+    public String list(Model model, @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+                       @RequestParam(name = "size", required = false, defaultValue = "5") int size){
+        Pageable pageable = PageRequest.of(page-1, size);
+
+        // 해야할 일
+        model.addAttribute("friends", friendService.findAllFriend(pageable));
+        model.addAttribute("currentPage", page);
         return "friends/list";
     }
 
