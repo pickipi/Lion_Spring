@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: boardapp
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/springdb
+    username: like
+    password: lion
+    driver-class-name: com.mysql.cj.jdbc.Driver
