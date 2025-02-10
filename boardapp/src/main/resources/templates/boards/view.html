@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Detail Page</title>
+    <link rel="stylesheet" th:href="@{/css/cards.css}">
 </head>
 <body>
+<div class="view_card">
+    <h2 th:text="${board.title}"></h2>
 
+    <span class="b_span">Name: </span><span th:text="${board.name}"></span><br>
+    <span class="b_span">Content: </span><span th:text="${board.content}"></span><br>
+    <span class="b_span">Created At: </span><span th:text="${board.createdAt}"></span><br>
+
+
+    <a th:href="@{/boards/list}">게시글목록</a>
+    <a th:href="@{/boards/update/{id}(id=${board.id})}">수정</a>
+    <a th:href="@{/boards/delete/{id}(id=${board.id})}">삭제</a>
+</div>
 </body>
 </html>

@@ -32,3 +32,13 @@ button{
 button:hover{
     background-color:#4BAF4B;
 }
+
+.view_card {
+    background-color: #c7d8ed;
+    border-radius:10px;
+    padding:15px;
+}
+
+.view_card .b_span{
+    font-weight: bold;
+}

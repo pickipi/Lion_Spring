@@ -34,6 +34,12 @@ public class BoardService {
     }
 
     public Board updateBoard(Board board){
+        board.setCreatedAt(LocalDate.now());
         return boardRepository.save(board);
+    }
+
+    @Transactional(readOnly = true)
+    public Board findBoardById(Long id){
+        return boardRepository.findById(id).orElse(null);
     }
 }

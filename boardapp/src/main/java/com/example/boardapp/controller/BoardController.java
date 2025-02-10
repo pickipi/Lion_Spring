@@ -38,4 +38,11 @@ public class BoardController {
         boardService.addBoard(board);
         return "redirect:/boards/list";
     }
+
+    // 상세페이지
+    @GetMapping("/{id}")
+    public String viewBoard(@PathVariable(name="id") Long id, Model model){
+        model.addAttribute("board", boardService.findBoardById(id));
+        return "boards/view";
+    }
 }
