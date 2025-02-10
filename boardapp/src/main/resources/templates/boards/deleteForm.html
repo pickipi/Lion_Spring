@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Delete Page</title>
+    <link rel="stylesheet" th:href="@{/css/cards.css}">
 </head>
 <body>
+<div class="delete_card">
+    <form th:action="@{/boards/delete/{id}(id=${board.id})}" method="post" th:object="${board}">
+        <h2>게시글 삭제</h2>
 
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" th:field="*{password}" required/><br>
+
+        <button type="submit">Delete</button>
+    </form>
+</div>
 </body>
 </html>

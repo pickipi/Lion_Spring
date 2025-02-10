@@ -42,4 +42,9 @@ public class BoardService {
     public Board findBoardById(Long id){
         return boardRepository.findById(id).orElse(null);
     }
+
+    @Transactional
+    public void deleteBoardById(Long id){
+        boardRepository.deleteById(id);
+    }
 }
