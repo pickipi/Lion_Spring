@@ -7,16 +7,15 @@
 </head>
 <body>
 <div class="view_card">
-    <h2 th:text="${board.title}"></h2>
+    <h2 class=board_title th:text="${board.title}"></h2>
 
-    <p class="p_bold">Name: <span th:text="${board.name}"></span></p>
-    <p class="p_bold">Content: <span th:text="${board.content}"></span></p>
-    <p class="p_bold">Created At: <span th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+    <span class="b_span">Name: </span> <span th:text="${board.name}"></span><br><br>
+    <span class="b_span">Content: </span> <span th:text="${board.content}"></span><br><br>
+    <span class="b_span">Created At: </span> <span th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span><br><br>
 
-
-    <a th:href="@{/boards/list}">게시글목록</a>
-    <a th:href="@{/boards/update/{id}(id=${board.id})}">수정</a>
-    <a th:href="@{/boards/delete/{id}(id=${board.id})}">삭제</a>
+    <a th:href="@{/boards/list}">📰게시글목록</a>
+    <a th:href="@{/boards/update/{id}(id=${board.id})}">🛠️수정</a>
+    <a th:href="@{/boards/delete/{id}(id=${board.id})}">🚫삭제</a>
 </div>
 </body>
 </html>

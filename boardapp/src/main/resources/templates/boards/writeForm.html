@@ -2,12 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
-    <title>게시글 등록 FORM</title>
+    <title>Write Page</title>
     <link rel="stylesheet" th:href="@{/css/cards.css}">
 </head>
 <body>
 <div class="card">
-    <h1>📜게시글 등록📜</h1>
+    <h1>📜게시글 등록</h1>
 
     <form th:action="@{/boards/add}" method="post" th:object="${board}">
         <label for="name">Name</label><br>

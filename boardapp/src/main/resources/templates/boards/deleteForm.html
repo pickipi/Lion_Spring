@@ -8,7 +8,7 @@
 <body>
 <div class="card">
     <form th:action="@{/boards/delete/{id}(id=${board.id})}" method="post" th:object="${board}">
-        <h2>게시글 삭제</h2>
+        <h1>🚫게시글 삭제</h1>
 
         <label for="password">Password:</label><br>
         <input type="password" id="password" th:field="*{password}" required/><br>

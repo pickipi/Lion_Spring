@@ -25,14 +25,14 @@ public class BoardController {
         return "boards/list";
     }
 
-    // 게시물 등록 폼 요청
+    // 게시글 등록 폼 요청
     @GetMapping("/add")
     public String addForm(Model model){
         model.addAttribute("board", new Board());
         return "boards/writeForm";
     }
 
-    // 게시물 저장
+    // 게시글 저장
     @PostMapping("/add")
     public String addBoard(@ModelAttribute Board board){
         boardService.addBoard(board);
@@ -46,14 +46,14 @@ public class BoardController {
         return "boards/view";
     }
 
-    // 게시물 삭제 폼 요청
+    // 게시글 삭제 폼 요청
     @GetMapping("/delete/{id}")
     public String deleteForm(@PathVariable("id") Long id, Model model){
         model.addAttribute("board", boardService.findBoardById(id));
         return "boards/deleteForm";
     }
 
-    // 게시물 삭제
+    // 게시글 삭제
     @PostMapping("/delete/{id}")
     public String deleteBoard(@PathVariable("id") Long id, @ModelAttribute Board board, Model model){
         // 비밀번호 검증을 위한 Board
@@ -66,19 +66,19 @@ public class BoardController {
             return "boards/deleteForm";
         }
 
-        // 2. 비밀번호 일치 -> 게시물 삭제
+        // 2. 비밀번호 일치 -> 게시글 삭제
         boardService.deleteBoardById(id);
         return "redirect:/boards/list";
     }
 
-    // 게시물 수정 폼 요청
+    // 게시글 수정 폼 요청
     @GetMapping("/update/{id}")
     public String updateForm(@PathVariable("id") Long id, Model model){
         model.addAttribute("board", boardService.findBoardById(id));
         return "boards/updateForm";
     }
 
-    // 게시물 수정
+    // 게시글 수정
     @PostMapping("/update/{id}")
     public String updateBoard(@PathVariable("id") Long id, @ModelAttribute Board board, Model model){
         // 비밀번호 검증을 위한 Board
@@ -91,7 +91,7 @@ public class BoardController {
             return "boards/updateForm";
         }
 
-        // 2. 비밀번호 일치 -> 게시물 수정
+        // 2. 비밀번호 일치 -> 게시글 수정
         board.setId(id);
         boardService.updateBoard(board);
         return "redirect:/boards/list";
