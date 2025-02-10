@@ -1,0 +1,34 @@
+.add_card{
+    background-color: #c7d8ed;
+    width:min(400px, 80%);
+    margin: 0 auto;
+    border-radius:5px;
+    border:2px double black;
+    padding:15px;
+}
+
+.add_card textarea{
+    height: 100px;
+}
+
+form {
+    margin: 10px;
+    width:100%;
+}
+
+input, textarea {
+    width:calc(100% - 10px); /*부모 요소에서 10px을 뺀 크기*/
+    margin:5px;
+    padding:5px;
+    box-sizing:border-box; /*padding, border의 전체 크기 유지*/
+}
+
+button{
+    width:90%;
+    background-color:#6DD66D;
+    border-radius:10px;
+}
+
+button:hover{
+    background-color:#4BAF4B;
+}

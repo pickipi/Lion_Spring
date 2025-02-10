@@ -29,7 +29,7 @@ public class BoardController {
     @GetMapping("/add")
     public String addForm(Model model){
         model.addAttribute("board", new Board());
-        return "boards/form";
+        return "boards/writeForm";
     }
 
     // 게시물 저장
