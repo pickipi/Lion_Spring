@@ -12,7 +12,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/board")
+@RequestMapping("/boards")
 public class BoardController {
-    
+    private final BoardService boardService;
+
+    @GetMapping("/list")
+    public String list(Model model, @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+                       @RequestParam(name = "size", required = false, defaultValue = "5") int size){
+        Pageable pageable = PageRequest.of(page-1, size);
+
+        model.addAttribute("boards", boardService.findAllBoard(pageable));
+        model.addAttribute("currentPage", page);
+        return "boards/list";
+    }
 }
