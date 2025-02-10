@@ -25,4 +25,12 @@ public class BoardService {
         Pageable pageable2 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
         return boardRepository.findAll(pageable2);
     }
+
+    public Board addBoard(Board board){
+        return boardRepository.save(board);
+    }
+
+    public Board updateBoard(Board board){
+        return boardRepository.save(board);
+    }
 }
