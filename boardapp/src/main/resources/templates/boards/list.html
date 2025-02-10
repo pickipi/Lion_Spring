@@ -20,10 +20,11 @@
     <tbody>
     <tr th:each="board:${boards}">
         <td th:text="${board.id}"></td>
+        <td th:text="${board.name}"></td>
         <td>
-            <a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.name}"></a>
+            <a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}"></a>
         </td>
-        <td th:text="${board.email}"></td>
+        <td th:text="${board.createdAt}"></td>
     </tr>
     </tbody>
 </table>
