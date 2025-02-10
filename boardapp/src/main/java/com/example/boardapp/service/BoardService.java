@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -29,12 +29,12 @@ public class BoardService {
     }
 
     public Board addBoard(Board board){
-        board.setCreatedAt(LocalDate.now());
+        board.setCreatedAt(LocalDateTime.now());
         return boardRepository.save(board);
     }
 
     public Board updateBoard(Board board){
-        board.setCreatedAt(LocalDate.now());
+        board.setCreatedAt(LocalDateTime.now());
         return boardRepository.save(board);
     }
 

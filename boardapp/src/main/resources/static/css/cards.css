@@ -43,13 +43,6 @@ button:hover{
     font-size:1.25em;
 }
 
-.view_card .b_span{
+.view_card .p_bold{
     font-weight: bold;
-}
-
-.delete_card{
-    background-color: #c7d8ed;
-    border-radius:10px;
-    padding:15px;
-    font-size:1.25em;
 }

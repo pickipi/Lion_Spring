@@ -24,7 +24,8 @@
         <td>
             <a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}"></a>
         </td>
-        <td th:text="${board.createdAt}"></td>
+        <!--temporals 사용으로 형식 지정, null 체크로 createdAt 값이 null일 경우 빈 문자열 출력-->
+        <td th:text="${board.createdAt != null ? #temporals.format(board.createdAt, 'yyyy-MM-dd') : ''}"></td>
     </tr>
     </tbody>
 </table>

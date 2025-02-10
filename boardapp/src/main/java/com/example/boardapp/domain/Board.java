@@ -3,7 +3,7 @@ package com.example.boardapp.domain;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,5 +18,5 @@ public class Board {
     private String title;
     private String content;
     private String password;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 }

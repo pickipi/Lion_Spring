@@ -6,7 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/cards.css}">
 </head>
 <body>
-<div class="delete_card">
+<div class="card">
     <form th:action="@{/boards/delete/{id}(id=${board.id})}" method="post" th:object="${board}">
         <h2>게시글 삭제</h2>
 
