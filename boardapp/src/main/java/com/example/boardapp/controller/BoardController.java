@@ -55,9 +55,19 @@ public class BoardController {
 
     // 게시물 삭제
     @PostMapping("/delete/{id}")
-    public String deleteBoard(@PathVariable("id") Long id, @ModelAttribute Board board){
-        boardService.deleteBoardById(id);
+    public String deleteBoard(@PathVariable("id") Long id, @ModelAttribute Board board, Model model){
+        // 비밀번호 검증을 위한 Board
+        Board existBoard = boardService.findBoardById(id);
 
+        // 1. 비밀번호 일치하지 않음 -> 삭제 폼 재이동
+        if(!existBoard.getPassword().equals(board.getPassword())){
+            model.addAttribute("board", existBoard);
+            model.addAttribute("error", "비밀번호가 일치하지 않습니다");
+            return "boards/deleteForm";
+        }
+
+        // 2. 비밀번호 일치 -> 게시물 삭제
+        boardService.deleteBoardById(id);
         return "redirect:/boards/list";
     }
 
@@ -70,7 +80,18 @@ public class BoardController {
 
     // 게시물 수정
     @PostMapping("/update/{id}")
-    public String updateBoard(@PathVariable("id") Long id, @ModelAttribute Board board){
+    public String updateBoard(@PathVariable("id") Long id, @ModelAttribute Board board, Model model){
+        // 비밀번호 검증을 위한 Board
+        Board existBoard = boardService.findBoardById(id);
+
+        // 1. 비밀번호 일치하지 않음 -> 수정 폼 재이동
+        if(!existBoard.getPassword().equals(board.getPassword())){
+            model.addAttribute("board", existBoard);
+            model.addAttribute("error", "비밀번호가 일치하지 않습니다");
+            return "boards/updateForm";
+        }
+
+        // 2. 비밀번호 일치 -> 게시물 수정
         board.setId(id);
         boardService.updateBoard(board);
         return "redirect:/boards/list";

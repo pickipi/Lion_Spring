@@ -13,6 +13,9 @@
         <label for="password">Password:</label><br>
         <input type="password" id="password" th:field="*{password}" required/><br>
 
+        <!--비밀번호 일치하지 않을 시 오류 메시지 출력-->
+        <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+
         <button type="submit">Delete</button>
     </form>
 </div>
