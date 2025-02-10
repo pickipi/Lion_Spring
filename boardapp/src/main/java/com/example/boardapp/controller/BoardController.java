@@ -53,11 +53,26 @@ public class BoardController {
         return "boards/deleteForm";
     }
 
-    // 삭제
+    // 게시물 삭제
     @PostMapping("/delete/{id}")
     public String deleteBoard(@PathVariable("id") Long id, @ModelAttribute Board board){
         boardService.deleteBoardById(id);
 
+        return "redirect:/boards/list";
+    }
+
+    // 게시물 수정 폼 요청
+    @GetMapping("/update/{id}")
+    public String updateForm(@PathVariable("id") Long id, Model model){
+        model.addAttribute("board", boardService.findBoardById(id));
+        return "boards/updateForm";
+    }
+
+    // 게시물 수정
+    @PostMapping("/update/{id}")
+    public String updateBoard(@PathVariable("id") Long id, @ModelAttribute Board board){
+        board.setId(id);
+        boardService.updateBoard(board);
         return "redirect:/boards/list";
     }
 }

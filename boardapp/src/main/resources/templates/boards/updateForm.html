@@ -1,10 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Update Page</title>
+    <link rel="stylesheet" th:href="@{/css/cards.css}">
 </head>
 <body>
+<div class="card">
+    <h1>🪛게시글 수정🪛</h1>
 
+    <form th:action="@{/boards/update/{id}(id=${board.id})}" method="post" th:object="${board}">
+        <label for="name">Name</label><br>
+        <input type="text" placeholder="이름을 입력하세요." id="name" th:field="*{name}" required/><br>
+
+        <label for="title">Title</label><br>
+        <input type="text" placeholder="제목을 입력하세요." id="title" th:field="*{title}" required/><br>
+
+        <label for="content">Content</label><br>
+        <textarea type="text" placeholder="내용을 입력하세요." id="content" th:field="*{content}" required/><br>
+
+        <label for="password">Password (for verification):</label><br>
+        <input type="password" id="password" th:field="*{password}" required/><br>
+
+        <button type="submit">Update</button>
+    </form>
+</div>
 </body>
 </html>

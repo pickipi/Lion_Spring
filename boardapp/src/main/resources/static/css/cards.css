@@ -1,4 +1,4 @@
-.add_card{
+.card{
     background-color: #c7d8ed;
     width:min(400px, 80%);
     margin: 0 auto;
@@ -7,7 +7,7 @@
     padding:15px;
 }
 
-.add_card textarea{
+.card textarea{
     height: 100px;
 }
 
@@ -24,9 +24,12 @@ input, textarea {
 }
 
 button{
-    width:90%;
+    height: 30px;
+    width:100%;
     background-color:#6DD66D;
     border-radius:10px;
+    font-size:15px;
+    font-weight:bold;
 }
 
 button:hover{
