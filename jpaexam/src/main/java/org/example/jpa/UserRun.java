@@ -37,5 +37,9 @@ public class UserRun {
         }
 
         System.out.println(user);
+
+        System.out.println("트랜잭션.commit() 실행전");
+        transaction.commit();
+        System.out.println("트랜잭션.commit() 실행후" );
     }
 }
