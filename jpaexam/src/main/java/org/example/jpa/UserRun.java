@@ -39,13 +39,21 @@ public class UserRun {
         System.out.println(user);
 
         // <<UPDATE>> : 데이터 수정
-        User user3 = entityManager.find(User.class, 1L);
-        user3.setName("newSample"); // DB에 바로 접근해서 수행하지 않음
-        // = 트랜잭션이 종료될때까지는 영속성 컨텍스트에서 관리하는 것
+//        User user3 = entityManager.find(User.class, 1L);
+//        user3.setName("newSample"); // DB에 바로 접근해서 수행하지 않음
+//        // = 트랜잭션이 종료될때까지는 영속성 컨텍스트에서 관리하는 것
+//
+//        // 중간에 다른 일 수행
+//        User user4 = entityManager.find(User.class, 1L);
+//        user4.setName("sample");
+//
+//        System.out.println("트랜잭션.commit() 실행전");
+//        transaction.commit(); // 영속성 컨텍스트를 분석해서 알맞는 동작을 수행
+//        System.out.println("트랜잭션.commit() 실행후" );
 
-        // 중간에 다른 일 수행
-        User user4 = entityManager.find(User.class, 1L);
-        user4.setName("sample");
+        // <<DELETE>> : 데이터 삭제
+        User user5 = entityManager.find(User.class, 1L);
+        entityManager.remove(user5);
 
         System.out.println("트랜잭션.commit() 실행전");
         transaction.commit(); // 영속성 컨텍스트를 분석해서 알맞는 동작을 수행
