@@ -54,7 +54,16 @@ public class UserDAO {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try{
             entityManager.getTransaction().begin();
-            entityManager.remove(user);
+            // <오류발생 수정전>
+            //  entityManager.remove(user); // 오류 발생 : 영속성 컨텍스트가 각 메소드마다 서로 다르기때문
+
+            /* <오류발생 해결>
+            User user를 받아왔을때 이 user가 존재한다면
+            즉 지금 영속성 컨텍스트안에 이미 해당 엔티티가 존재한다면remove하고
+            없다면, merge
+             */
+            entityManager.remove(entityManager.contains(user)?user : entityManager.merge(user));
+
             entityManager.getTransaction().commit();
         }finally{
             entityManager.close();

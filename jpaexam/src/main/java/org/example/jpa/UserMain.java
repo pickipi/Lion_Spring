@@ -21,8 +21,18 @@ public class UserMain {
         log.info("[user == user2] : {}", equalsResult);
 
         // 데이터 수정
-        user2.setName("Rush");
-        userDAO.updateUser(user2); // user2의 이름을 변경 후 update를 수행해봄
+//        user2.setName("Rush");
+//        userDAO.updateUser(user2); // user2의 이름을 변경 후 update를 수행해봄
 
+        // 샘플 데이터 삽입
+//        userDAO.createUser(new User("Tyler", "Morton@premier.com"));
+//        userDAO.createUser(new User("Antonee", "Robinson@premier.com"));
+//        userDAO.createUser(new User("Jayden", "Danns@premier.com"));
+//        userDAO.createUser(new User("Sander", "Berger@premier.com"));
+//        userDAO.createUser(new User("Milos", "Kerkez@premier.com"));
+
+        // 데이터 삭제 - id로 접근
+        User delUser = userDAO.findUser(4L);
+        userDAO.deleteUser(delUser);
     }
 }
