@@ -30,14 +30,11 @@ public class SchoolMain {
 
         try{
             // School 생성
-            School school = new School("Lion School");
+            School school = new School("Tiger School");
 
             // Student 생성
-            Student student1 = new Student("Morgan", school);
-            school.getStudents().add(student1); // school의 빈 리스트에 학생 넣기
-
-            Student student2 = new Student("Conor", school);
-            school.getStudents().add(student2); // school의 빈 리스트에 학생 넣기
+            school.getStudents().add(new Student("Matz", school));
+            school.getStudents().add(new Student("Alex", school));
 
             em.persist(school); // 생성한 school을 영속상태로 만들어줌
 
@@ -53,8 +50,54 @@ public class SchoolMain {
         }
     }
 
+    // 데이터 수정
+    private static void update(){
+        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+        em.getTransaction().begin();
+
+        try{
+            // School 변경
+            School school = em.find(School.class, 4L);
+            String beforeSchool = school.getName();
+            school.setName("Jaguar School"); // Tiger School 변경 -> Jaguar School 변경
+
+            em.getTransaction().commit(); // 모든 변경사항 적용
+
+            String updatedSchool = school.getName();
+            log.info("[UPDATE] School Name : {} -> {}", beforeSchool, updatedSchool);
+
+            for(Student student : school.getStudents()){
+                log.info("{}'s Student Name : {}", updatedSchool, student.getName());
+            }
+        }finally{
+            em.close();
+        }
+    }
+
+    // 데이터 삭제
+    private static void delete(){
+        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+        em.getTransaction().begin();
+
+        try{
+            // 이전 정보를 출력하기위한 find()
+            School school = em.find(School.class, 3L);
+            String deletedSchool = school.getName();
+
+            // School 삭제
+            em.remove(school);
+            em.getTransaction().commit(); // 모든 변경사항 적용
+
+            log.info("[DELETE] School Name : {} -> [삭제완료]", deletedSchool);
+        }finally{
+            em.close();
+        }
+    }
+
     public static void main(String[] args) {
-        find();
-        create();
+//        find();
+//        create();
+//        update();
+        delete();
     }
 }
