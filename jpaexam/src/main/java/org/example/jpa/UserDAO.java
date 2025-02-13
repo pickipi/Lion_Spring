@@ -3,7 +3,9 @@ package org.example.jpa;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class UserDAO {
     private EntityManagerFactory entityManagerFactory;
 
@@ -13,6 +15,7 @@ public class UserDAO {
 
     // User엔티티를 받아서 생성
     public void createUser(User user){
+//        EntityManager entityManager = entityManagerFactory.createEntityManager(); // 기존 코드
         EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
         try{
             entityManager.getTransaction().begin();
@@ -43,6 +46,8 @@ public class UserDAO {
         try{
             entityManager.getTransaction().begin();
             entityManager.merge(user);
+            log.info("[수정] user : {}", user.getName());
+            log.info("[수정] user : {}", user.getEmail());
             entityManager.getTransaction().commit();
         }finally{
             entityManager.close();
@@ -63,6 +68,8 @@ public class UserDAO {
             없다면, merge
              */
             entityManager.remove(entityManager.contains(user)?user : entityManager.merge(user));
+            log.info("[삭제] user : {}", user.getName());
+            log.info("[삭제] user : {}", user.getEmail());
 
             entityManager.getTransaction().commit();
         }finally{

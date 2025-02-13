@@ -36,7 +36,13 @@ public class UserMain {
 //        userDAO.deleteUser(delUser);
 
         // JPAUtil 추가 후 createUser()테스트
-        userDAO.createUser(new User("Luke", "Chambers@premier.com"));
+//        userDAO.createUser(new User("Luke", "Chambers@premier.com"));
 
+        // UserDAO에 @Slf4j 추가 후 수정, 삭제 테스트
+        user2.setName("Ramsey"); // 수정
+        userDAO.updateUser(user2); // user2의 이름을 변경 후 update를 수행해봄
+
+        User delUser = userDAO.findUser(3L); // 삭제
+        userDAO.deleteUser(delUser);
     }
 }
