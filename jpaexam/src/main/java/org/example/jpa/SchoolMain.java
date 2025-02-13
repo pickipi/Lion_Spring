@@ -5,7 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SchoolMain {
-    public static void main(String[] args) {
+    // 데이터 조회
+    private static void find(){
         EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
         entityManager.getTransaction().begin();
 
@@ -20,5 +21,10 @@ public class SchoolMain {
         }finally{
             entityManager.close();
         }
+    }
+
+
+    public static void main(String[] args) {
+        find();
     }
 }
