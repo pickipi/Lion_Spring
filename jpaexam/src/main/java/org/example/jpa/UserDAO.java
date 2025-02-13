@@ -13,7 +13,7 @@ public class UserDAO {
 
     // User엔티티를 받아서 생성
     public void createUser(User user){
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
         try{
             entityManager.getTransaction().begin();
 

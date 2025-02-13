@@ -2,7 +2,9 @@ package org.example.jpa;
 
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class JPAUtil {
     private static final EntityManagerFactory emfInstance = Persistence.createEntityManagerFactory("UserPU");
 
@@ -10,7 +12,7 @@ public class JPAUtil {
     static {
         Runtime.getRuntime().addShutdownHook(new Thread( () -> {
             if(emfInstance != null){
-                System.out.println("---emf close---");
+                log.info("---emf close---");
                 emfInstance.close();
             }
         }));

@@ -32,7 +32,11 @@ public class UserMain {
 //        userDAO.createUser(new User("Milos", "Kerkez@premier.com"));
 
         // 데이터 삭제 - id로 접근
-        User delUser = userDAO.findUser(4L);
-        userDAO.deleteUser(delUser);
+//        User delUser = userDAO.findUser(4L);
+//        userDAO.deleteUser(delUser);
+
+        // JPAUtil 추가 후 createUser()테스트
+        userDAO.createUser(new User("Luke", "Chambers@premier.com"));
+
     }
 }
