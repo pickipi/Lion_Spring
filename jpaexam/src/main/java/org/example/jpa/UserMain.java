@@ -39,10 +39,13 @@ public class UserMain {
 //        userDAO.createUser(new User("Luke", "Chambers@premier.com"));
 
         // UserDAO에 @Slf4j 추가 후 수정, 삭제 테스트
-        user2.setName("Ramsey"); // 수정
-        userDAO.updateUser(user2); // user2의 이름을 변경 후 update를 수행해봄
+//        user2.setName("Ramsey"); // 수정
+//        userDAO.updateUser(user2); // user2의 이름을 변경 후 update를 수행해봄
+//
+//        User delUser = userDAO.findUser(3L); // 삭제
+//        userDAO.deleteUser(delUser);
 
-        User delUser = userDAO.findUser(3L); // 삭제
-        userDAO.deleteUser(delUser);
+        // JPA - 엔티티관련 어노테이션 추가 후 실습
+        // INSERT INTO students (name, school_id) VALUES ('Alice', 1);
     }
 }
