@@ -17,7 +17,7 @@ public class Person {
     @Column(nullable = false)
     private String name;
 
-    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "person", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private Passport passport;
 
     public Person(String name) {
