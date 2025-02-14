@@ -10,13 +10,14 @@ public class AuthorMain {
         EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
         em.getTransaction().begin();
         try{
-            Author author = em.find(Author.class, 2L);
-            String findAuthor = author.getName();
-            log.info("[SELECT] [ID=2] Author : {}", findAuthor);
-
-            for(Book book : author.getBooks()){
-                log.info("Book [{}]'s Author : [{}]", book.getTitle(), findAuthor);
-            }
+//            Author author = em.find(Author.class, 2L);
+//            String findAuthor = author.getName();
+//            log.info("[SELECT] [ID=2] Author : {}", findAuthor);
+//
+//            for(Book book : author.getBooks()){
+//                log.info("Book [{}]'s Author : [{}]", book.getTitle(), findAuthor);
+//            }
+            em.find(Book.class, 1L);
         }finally{
             em.close();
         }
@@ -82,9 +83,9 @@ public class AuthorMain {
     }
 
     public static void main(String[] args) {
-//        find();
+        find();
 //        create();
 //        update();
-        delete();
+//        delete();
     }
 }
