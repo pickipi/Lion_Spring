@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Table(name = "employees")
 @Entity
-@Getter@Setter@ToString
+@Getter@Setter
 @NoArgsConstructor
 public class Employee {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +31,12 @@ public class Employee {
             inverseJoinColumns = @JoinColumn(name = "project_id") // 반대쪽의 컬럼을 명시 (Project의 기본키인 Long id)
     )
     private Set<Project> projects= new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
