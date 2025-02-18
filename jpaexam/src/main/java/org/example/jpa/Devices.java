@@ -8,9 +8,14 @@ import lombok.extern.slf4j.Slf4j;
 @Entity
 @Getter@Setter
 // 1. 단일 테이블 전략
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+//@Table(name = "DEVICES_SINGLE")
+
+// 2. 조인 테이블 전략
+@Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-@Table(name = "DEVICES_SINGLE")
+@Table(name = "DEVICES_JOINED")
 public abstract class Devices {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,22 +24,24 @@ public abstract class Devices {
     private int price;
 }
 
+//@Table(name = "PHONE_SINGLE")
 @Entity
 @Getter@Setter
-@Table(name = "PHONE_SINGLE")
+@Table(name = "PHONE_JOIN")
 @DiscriminatorValue("PHONE")
 class Phone extends Devices{
     private String operatingSystem;
     private int batteryLife;
 }
 
+//@Table(name = "LAPTOP_SINGLE")
 @Entity
 @Getter@Setter
-@Table(name = "LAPTOP_SINGLE")
+@Table(name = "LAPTOP_JOIN")
 @DiscriminatorValue("LAPTOP")
 class Laptop extends Devices{
     private int ramSize;
-    private boolean hasTouchScreen;
+    private String hasTouchScreen;
 }
 
 @Slf4j
@@ -43,21 +50,21 @@ class DevicesMain{
         EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
         em.getTransaction().begin();
         try{
-//            Phone phone = new Phone();
-//            phone.setBrand("Apple");
-//            phone.setPrice(1300000);
-//            phone.setBatteryLife(90);
-//            phone.setOperatingSystem("iOS");
-//
-//            Laptop laptop = new Laptop();
-//            laptop.setBrand("Asus");
-//            laptop.setPrice(750000);
-//            laptop.setRamSize(16);
-//            laptop.setHasTouchScreen(false);
-//
-//            em.persist(phone);
-//            em.persist(laptop);
-//            em.getTransaction().commit();
+            Phone phone = new Phone();
+            phone.setBrand("Apple");
+            phone.setPrice(1300000);
+            phone.setBatteryLife(90);
+            phone.setOperatingSystem("iOS");
+
+            Laptop laptop = new Laptop();
+            laptop.setBrand("Asus");
+            laptop.setPrice(750000);
+            laptop.setRamSize(16);
+            laptop.setHasTouchScreen("있음");
+
+            em.persist(phone);
+            em.persist(laptop);
+            em.getTransaction().commit();
 
             // 데이터 조회
             Devices device = em.find(Devices.class, 2L);
@@ -74,7 +81,7 @@ class DevicesMain{
                 log.info("브랜드 : " + findLaptop.getBrand());
                 log.info("가격 : " + findLaptop.getPrice() + "원");
                 log.info("램 용량 : [" + findLaptop.getRamSize() + "GB]");
-                log.info("터치스크린 가능 여부 : [" + findLaptop.isHasTouchScreen() + "]");
+                log.info("터치스크린 가능 여부 : [" + findLaptop.getHasTouchScreen() + "]");
             }
         }finally{
             em.close();
