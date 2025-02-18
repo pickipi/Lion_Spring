@@ -19,8 +19,15 @@
 <!--        <class>org.example.jpa.Bus</class>-->
 <!--        <class>org.example.jpa.Truck</class>-->
 <!--        <class>org.example.jpa.Taxi</class>-->
-        <class>org.example.jpa.Football</class>
-        <class>org.example.jpa.Basketball</class>
+<!--        <class>org.example.jpa.Football</class>-->
+<!--        <class>org.example.jpa.Basketball</class>-->
+<!--        <class>org.example.jpa.Dalgona</class>-->
+<!--        <class>org.example.jpa.Gonggi</class>-->
+<!--        <class>org.example.jpa.Company</class>-->
+<!--        <class>org.example.jpa.Customer</class>-->
+        <class>org.example.jpa.Phone</class>
+        <class>org.example.jpa.Laptop</class>
+
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
