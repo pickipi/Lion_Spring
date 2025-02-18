@@ -5,19 +5,24 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-@Entity
-@Getter@Setter
+
 // 1. 단일 테이블 전략
 //@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 //@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 //@Table(name = "DEVICES_SINGLE")
 
 // 2. 조인 테이블 전략
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+//@Inheritance(strategy = InheritanceType.JOINED)
+//@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+//@Table(name = "DEVICES_JOINED")
+
+// 3. 테이블 당 구체 클래스 전략
+@Entity
+@Getter@Setter
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "DEVICES_JOINED")
 public abstract class Devices {
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id@GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     private String brand;
@@ -25,20 +30,20 @@ public abstract class Devices {
 }
 
 //@Table(name = "PHONE_SINGLE")
+//@Table(name = "PHONE_JOIN")
 @Entity
 @Getter@Setter
-@Table(name = "PHONE_JOIN")
-@DiscriminatorValue("PHONE")
+@Table(name = "PHONE_TABLE")
 class Phone extends Devices{
     private String operatingSystem;
     private int batteryLife;
 }
 
 //@Table(name = "LAPTOP_SINGLE")
+//@Table(name = "LAPTOP_JOIN")
 @Entity
 @Getter@Setter
-@Table(name = "LAPTOP_JOIN")
-@DiscriminatorValue("LAPTOP")
+@Table(name = "LAPTOP_TABLE")
 class Laptop extends Devices{
     private int ramSize;
     private String hasTouchScreen;
