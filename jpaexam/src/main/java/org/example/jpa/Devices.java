@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 @Entity
 @Getter@Setter
 // 1. 단일 테이블 전략
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "DEVICES_SINGLE")
 public abstract class Devices {
