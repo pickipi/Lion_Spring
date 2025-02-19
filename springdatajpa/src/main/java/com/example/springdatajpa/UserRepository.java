@@ -1,5 +1,6 @@
 package com.example.springdatajpa;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -50,5 +51,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // 고급 쿼리 (SQL = nativeQuery) 사용 - 특정 이메일을 포함하는 데이터 조회
     @Query(nativeQuery = true, value = "SELECT * FROM jpa_user WHERE email LIKE CONCAT('%', :email, '%')")
     List<User> selectByEmailNative(@Param("email") String email);
+
+    // Pageable 사용
+    List<User> findByNameContaining(String name, Pageable pageable);
 
 }

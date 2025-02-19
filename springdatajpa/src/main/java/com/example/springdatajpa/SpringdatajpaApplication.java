@@ -5,6 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Slf4j
 @SpringBootApplication
@@ -75,7 +77,17 @@ public class SpringdatajpaApplication {
 //			log.info("수정된 데이터 수 : " + updateCount);
 
 			// 고급 쿼리 - native SQL 사용 - 이메일로 데이터 조회
-			repository.selectByEmailNative("premier").forEach(user -> log.info(user.toString()));
+//			repository.selectByEmailNative("premier").forEach(user -> log.info(user.toString()));
+
+			// Pageable 객체 사용
+			Pageable pageable = PageRequest.of(0, 2);
+			// 조회할 페이지 0 (첫페이지), 한 페이지당 2개씩 데이터를 보여줄 것
+			// 조회할 페이지 1 (두번째페이지)로 그 다음 데이터 2개를 조회할 수 있을 것
+			repository.findByNameContaining("J", pageable).forEach(user -> log.info(user.toString()));
+
+			// findAll()메소드 같은 경우 기본적으로 pageable 객체를 받아서 실행하도록 할 수 있으므로
+			// repository.findAll(pageable).forEach(user -> log.info(user.toString()));
+			// 이처럼 바로 페이지 조회 메소드를 수행하도록 구현할 수 있음
 
 		};
 	}
