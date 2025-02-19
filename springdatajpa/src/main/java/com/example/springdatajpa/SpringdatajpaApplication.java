@@ -38,9 +38,29 @@ public class SpringdatajpaApplication {
 			// SELECT
 //			repository.findAll().forEach(user -> log.info(user.toString()));
 
-			// 이름 기준 조회 메소드 테스트
-			List<User> users = repository.findByName("Luke");
-			users.forEach(user -> log.info(user.toString()));
+			// 이름 기준 데이터 조회 메소드 테스트
+//			List<User> users = repository.findByName("Luke");
+//			users.forEach(user -> log.info(user.toString()));
+
+			// 이메일 기준 데이터 조회 메소드 테스트
+//			List<User> emails = repository.findByEmail("Chambers@premier.com");
+//			emails.forEach(user -> log.info(user.toString()));
+
+			// 특정 이름을 포함하는 데이터 조회 메소드 테스트
+//			List<User> containName = repository.findByNameContaining("d"); // d가 포함된 이름 조회
+//			containName.forEach(user -> log.info(user.toString()));
+//
+//			// 특정 이름으로 시작하는 데이터 조회 메소드 테스트
+//			List<User> startName = repository.findByNameStartingWith("Ja"); // Ja로 시작하는 이름 조회
+//			startName.forEach(user -> log.info(user.toString()));
+
+			// 이름이 (?)이거나 이메일이 (?)인 데이터 조회 메소드 테스트
+//			List<User> nameOrEmail = repository.findByNameOrEmail("Andrew", "Berger@premier.com");
+//			nameOrEmail.forEach(user -> log.info(user.toString()));
+
+			// 이름이 (?) 이고, 이메일은 (?)인 데이터 조회 메소드 추가
+			List<User> nameAndEmail = repository.findByNameAndEmail("Andrew", "Robertson@premier.com");
+			nameAndEmail.forEach(user -> log.info(user.toString()));
 		};
 	}
 }
