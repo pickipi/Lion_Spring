@@ -6,6 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+
 @Slf4j
 @SpringBootApplication
 public class SpringdatajpaApplication {
@@ -34,7 +36,11 @@ public class SpringdatajpaApplication {
 //			repository.save(updateUser);
 
 			// SELECT
-			repository.findAll().forEach(user -> log.info(user.toString()));
+//			repository.findAll().forEach(user -> log.info(user.toString()));
+
+			// 이름 기준 조회 메소드 테스트
+			List<User> users = repository.findByName("Luke");
+			users.forEach(user -> log.info(user.toString()));
 		};
 	}
 }
