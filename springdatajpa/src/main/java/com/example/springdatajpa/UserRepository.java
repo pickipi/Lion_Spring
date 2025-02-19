@@ -35,15 +35,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.name LIKE %:name%")
     List<User> advancedSelectUserLike(@Param("name") String name);
 
-    // 고급 쿼리 - @Modifying 데이터 삭제
+    // 고급 쿼리 (JPQL) - @Modifying 데이터 삭제
     @Transactional
     @Modifying
     @Query("DELETE FROM User u WHERE u.email = :email")
     int deleteByEmail(@Param("email") String email);
 
-    // 고급 쿼리 - @Modifying 데이터 수정
+    // 고급 쿼리 (JPQL) - @Modifying 데이터 수정
     @Transactional
     @Modifying
     @Query("UPDATE User u SET u.email = :email WHERE u.id=:id")
     int updateByEmail(@Param("id") Long id, @Param("email") String email);
+
+    // 고급 쿼리 (SQL = nativeQuery) 사용 - 특정 이메일을 포함하는 데이터 조회
+    @Query(nativeQuery = true, value = "SELECT * FROM jpa_user WHERE email LIKE CONCAT('%', :email, '%')")
+    List<User> selectByEmailNative(@Param("email") String email);
+
 }

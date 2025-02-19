@@ -71,8 +71,12 @@ public class SpringdatajpaApplication {
 //			log.info("삭제된 데이터 수 : " + deleteCount);
 
 			// 고급 쿼리 - 데이터 수정 (@Modifying)
-			int updateCount = repository.updateByEmail(13L, "Koumas@premier.com");
-			log.info("수정된 데이터 수 : " + updateCount);
+//			int updateCount = repository.updateByEmail(13L, "Koumas@premier.com");
+//			log.info("수정된 데이터 수 : " + updateCount);
+
+			// 고급 쿼리 - native SQL 사용 - 이메일로 데이터 조회
+			repository.selectByEmailNative("premier").forEach(user -> log.info(user.toString()));
+
 		};
 	}
 }
