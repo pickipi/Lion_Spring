@@ -6,8 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.List;
-
 @Slf4j
 @SpringBootApplication
 public class SpringdatajpaApplication {
@@ -59,8 +57,22 @@ public class SpringdatajpaApplication {
 //			nameOrEmail.forEach(user -> log.info(user.toString()));
 
 			// 이름이 (?) 이고, 이메일은 (?)인 데이터 조회 메소드 추가
-			List<User> nameAndEmail = repository.findByNameAndEmail("Andrew", "Robertson@premier.com");
-			nameAndEmail.forEach(user -> log.info(user.toString()));
+//			List<User> nameAndEmail = repository.findByNameAndEmail("Andrew", "Robertson@premier.com");
+//			nameAndEmail.forEach(user -> log.info(user.toString()));
+
+			// 고급 쿼리 JPQL
+//			repository.advancedSelectUser("Jayden").forEach(user -> log.info(user.toString()));
+
+			// 고급 쿼리 JPQL - LIKE (%Ja% 로 Ja를 포함하는 것 조회)
+//			repository.advancedSelectUserLike("Ja").forEach(user -> log.info(user.toString()));
+
+			// 고급 쿼리 - 데이터 삭제 (@Modifying)
+//			int deleteCount = repository.deleteByEmail("Chambers@premier.com");
+//			log.info("삭제된 데이터 수 : " + deleteCount);
+
+			// 고급 쿼리 - 데이터 수정 (@Modifying)
+			int updateCount = repository.updateByEmail(13L, "Koumas@premier.com");
+			log.info("수정된 데이터 수 : " + updateCount);
 		};
 	}
 }

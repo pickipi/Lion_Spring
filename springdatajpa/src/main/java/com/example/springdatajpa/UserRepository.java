@@ -1,6 +1,10 @@
 package com.example.springdatajpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,4 +26,24 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // 이름이 (?) 이고, 이메일은 (?)인 데이터 조회 메소드 추가
     List<User> findByNameAndEmail(String name, String email);
+
+    // 고급 쿼리 생성 (JPQL)
+    @Query("SELECT u FROM User u Where u.name = :name")
+    List<User> advancedSelectUser(@Param("name") String name); // 이 @Param의 name이 JPQL에서의 :name에 매핑될 것
+
+    // 고급 쿼리 생성 (JPQL) - LIKE
+    @Query("SELECT u FROM User u WHERE u.name LIKE %:name%")
+    List<User> advancedSelectUserLike(@Param("name") String name);
+
+    // 고급 쿼리 - @Modifying 데이터 삭제
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM User u WHERE u.email = :email")
+    int deleteByEmail(@Param("email") String email);
+
+    // 고급 쿼리 - @Modifying 데이터 수정
+    @Transactional
+    @Modifying
+    @Query("UPDATE User u SET u.email = :email WHERE u.id=:id")
+    int updateByEmail(@Param("id") Long id, @Param("email") String email);
 }
