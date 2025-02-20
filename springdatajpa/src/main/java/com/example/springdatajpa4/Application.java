@@ -20,6 +20,10 @@ public class Application {
         return args -> {
             List<Employee> findLastName = employeeRepository.findByLastName("Patel");
             findLastName.forEach(employee -> log.info("[마지막 이름이 Patel]인 고객 정보 :: {} {} 님", employee.getFirstName(), employee.getLastName()));
+
+            // JPA 실습
+            List<Employee> findMoreSalary = employeeRepository.findBySalaryGreaterThanEqual(12000d);
+            findMoreSalary.forEach(employee -> log.info("[연봉 12000 이상]인 고객 : {}의 연봉 [{}]", employee.getFirstName(), employee.getSalary()));
         };
     }
 }
