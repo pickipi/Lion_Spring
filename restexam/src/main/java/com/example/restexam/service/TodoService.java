@@ -34,6 +34,11 @@ public class TodoService {
     // 3. 할 일 완료, 미완료 변경
     @Transactional
     public Todo updateTodo(Long id){
+        boolean exists = todoRepository.existsById(id);
+        if(!exists){
+            throw new EntityNotFoundException("이미 삭제된 Todo입니다." + id);
+        }
+
         Todo todo = todoRepository.findById(id).orElseThrow( () -> new EntityNotFoundException("id에 해당되는 todo를 찾을 수 없습니다" + id));
         todo.setDone(!todo.isDone()); // 반대로 바꿔줄 수 있도록 isDone()을 불러와서 (!)로써 변경해준다.
 
