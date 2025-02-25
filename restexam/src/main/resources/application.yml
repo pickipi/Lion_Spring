@@ -3,7 +3,7 @@ spring:
     name: restexam
 
   datasource:
-    url: jdbc:mysql://localhost:3306/jpadb
+    url: jdbc:mysql://localhost:3307/jpadb
     username: like
     password: lion
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -11,3 +11,11 @@ spring:
     hibernate:
       ddl-auto: update
       show-sql: true
+
+# server로 UTF-8 설정 추가
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true

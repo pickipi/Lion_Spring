@@ -10,7 +10,7 @@ function getTodos(){
            if(xhr.status === 200){
                // json 문자열을 json 객체로 변환시킨다.
                let todos = JSON.parse(this.responseText);
-               // console.log(todos);
+                console.log(todos);
                for(let i = 0; i < todos.length; i++){
                    todoItemAdd(todos[i]);
                }
@@ -21,7 +21,7 @@ function getTodos(){
 }
 
 function updateTodo(id){
-    let updateTodo = {"id":id};
+//    let updateTodo = {"id":id};
     let xhr = new XMLHttpRequest();
     xhr.open('PATCH','http://localhost:8080/api/todos/'+id);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -32,11 +32,11 @@ function updateTodo(id){
 function deleteTodo(id){
 //    let delTodo = {"id": id};
     let xhr = new XMLHttpRequest();
-//    xhr.open('DELETE','http://localhost:8080/api/todos'); // Delete에서 Rest API를 고려하지 않고 @RequestBody 사용
-    xhr.open('DELETE','http://localhost:8080/api/todos/'+id); // Delete에서 Rest API를 고려한 @PathVariable에 대한 것
+//    xhr.open('DELETE','http://localhost:8080/api/todos');
+    xhr.open('DELETE','http://localhost:8080/api/todos/'+id);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-     xhr.send(JSON.stringify()); // Delete에서 Rest API를 고려한 @PathVariable에 대한 것
-//    xhr.send(JSON.stringify(delTodo)); // Delete에서 Rest API를 고려하지 않고 @RequestBody 사용
+     xhr.send(JSON.stringify());
+//    xhr.send(JSON.stringify(delTodo));
 }
 
 function postTodo(todo){
@@ -108,10 +108,13 @@ function todoItemAdd(todoObj){
 
     // 동적으로 x버튼을 클릭했을 때 처리해야할 이벤트를 추가한다.
     removeSpan.addEventListener('click',function(){
+        event.stopPropagation(); // 이벤트 전파 (=이벤트 버블링) 가능성 방지 -> (X)버튼 클릭 시 updateTodo()가 실행되지 않도록 수정
         let liObj = this.parentElement;
         console.log(liObj);
         deleteTodo(liObj.getAttribute("id"));
         liObj.remove();
-        return false; // return false를 하지 않으면 수정이 되면서 update를 호출한다.이미 삭제된 것을 수정하려고 하니 오류가 발생한다. https://programmingsummaries.tistory.com/313
+//        return false; // 이벤트 전파 (=이벤트 버블링)가능성 존재
+// return false를 하지 않으면 수정이 되면서 update를 호출한다.이미 삭제된 것을 수정하려고 하니 오류가 발생한다.
+
     });
 };
