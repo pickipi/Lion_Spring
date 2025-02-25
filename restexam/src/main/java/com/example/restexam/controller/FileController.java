@@ -1,6 +1,5 @@
 package com.example.restexam.controller;
 
-import com.example.restexam.domain.UploadInfo;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +16,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -36,14 +36,12 @@ public class FileController {
 
     // 파일 업로드
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam(name = "info", required = false) UploadInfo uploadInfo){
-        log.info(file.getOriginalFilename());
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file){
+        log.info("파일명 : " + file.getOriginalFilename());
 
         try(InputStream inputStream = file.getInputStream()){
-            StreamUtils.copy(inputStream, new FileOutputStream("c:/Temp/DumpFile/upload/" + file.getOriginalFilename()));
-            return ResponseEntity.ok().body("파일저장이 완료되었습니다." + file.getOriginalFilename());
+            StreamUtils.copy(inputStream, new FileOutputStream("c:/Temp/DumpFile/upload/" + UUID.randomUUID().toString() + file.getOriginalFilename()));
+            return ResponseEntity.ok().body("파일저장이 완료되었습니다. 파일명: " + file.getOriginalFilename());
         }catch(IOException e){
             return ResponseEntity
                     .badRequest()
