@@ -36,7 +36,7 @@ public class TodoController {
         return ResponseEntity.ok(updateTodo);
     }
 
-    // to-do 삭제 (@DeleteMapping 사용)
+    // to-do 삭제 (@DeleteMapping 사용) - Rest API 고려 X (@RequestBody 사용)
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTodo(@RequestBody Todo todo){
         todoService.deleteTodo(todo.getId());
