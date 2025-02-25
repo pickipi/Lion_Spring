@@ -2,6 +2,11 @@ spring:
   application:
     name: restexam
 
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 4MB
+
   datasource:
     url: jdbc:mysql://localhost:3307/jpadb
     username: like
@@ -11,11 +16,3 @@ spring:
     hibernate:
       ddl-auto: update
       show-sql: true
-
-# server로 UTF-8 설정 추가
-server:
-  servlet:
-    encoding:
-      charset: UTF-8
-      force: true
-      enabled: true
