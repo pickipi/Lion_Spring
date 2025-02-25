@@ -37,11 +37,11 @@ public class TodoController {
     }
 
     // to-do 삭제 (@DeleteMapping 사용) - Rest API 고려 X (@RequestBody 사용)
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteTodo(@RequestBody Todo todo){
-//        todoService.deleteTodo(todo.getId());
-//        return ResponseEntity.noContent().build();// <Void>로 아무것도 반환하지 않으므로 noContent()를 사용
-//    }
+    @DeleteMapping
+    public ResponseEntity<Void> deleteTodo(@RequestBody Todo todo){
+        todoService.deleteTodo(todo.getId());
+        return ResponseEntity.noContent().build();// <Void>로 아무것도 반환하지 않으므로 noContent()를 사용
+    }
 
     // to-do 삭제 (@DeleteMapping 사용) - Rest API 적용 (@PathVariable 사용)
     @DeleteMapping("/{id}")
