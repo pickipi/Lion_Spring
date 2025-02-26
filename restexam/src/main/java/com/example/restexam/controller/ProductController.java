@@ -1,52 +1,49 @@
 package com.example.restexam.controller;
 
-import com.example.restexam.domain.Product;
+import com.example.restexam.dto.ProductDTO;
+import com.example.restexam.service.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/api/products")
+@RequiredArgsConstructor
 public class ProductController {
-    private final Map<Long, Product> products = new HashMap<>();
-    private final AtomicLong counter = new AtomicLong();
+    private final ProductService productService;
 
     // 1. 상품 저장
     @PostMapping
-    public Product addProduct(@RequestBody Product product){
-        long id = counter.incrementAndGet();
-        product.setId(id);
-        products.put(id, product);
-        return product;
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO){
+        return ResponseEntity.ok(productService.createProduct(productDTO));
     }
 
     // 2. 특정 상품 가져오기 (id)
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable Long id){
-        return products.get(id);
+    public ResponseEntity<ProductDTO> getProduct(@PathVariable("id") Long id){
+        return ResponseEntity.ok(productService.getProductById(id));
     }
 
     // 3. 모든 상품 가져오기
     @GetMapping
-    public List<Product> getAllProducts(){
-        return new ArrayList<>(products.values());
+    public ResponseEntity<List<ProductDTO>> getProducts(){
+        return ResponseEntity.ok(productService.getProducts());
     }
 
     // 4. 상품 수정
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product product){
-        product.setId(id);
-        products.put(id, product);
-        return product;
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long id, @RequestBody ProductDTO productDTO){
+        productDTO.setId(id); // productDTO를 전달하기 전에 id부터 받아온 값으로 변경한다.
+        return ResponseEntity.ok(productService.updateProduct(productDTO));
     }
 
     // 5. 상품 삭제
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id){
-        products.remove(id);
+    public ResponseEntity<String> deleteProduct(@PathVariable("id") Long id){
+        productService.deleteProduct(id);
+        return ResponseEntity.ok(id + " 상품이 삭제 되었습니다.");
+        // 만약 <Void> 이면 noContent().build();를 넣어서 보낸다.
     }
 }
