@@ -32,6 +32,9 @@ public class ProductService {
         Product createProduct = productRepository.save(product);
 
         // 반환값으로 DTO를 새로 만들며 이 메소드에서 생성해주었던 Product 타입의 (ID, NAME, PRICE)를 전달
-        return new ProductDTO(createProduct.getId(), createProduct.getName(), createProduct.getPrice());
+        //return new ProductDTO(createProduct.getId(), createProduct.getName(), createProduct.getPrice());
+
+        // 빌더 패턴 사용 후 반환
+        return ProductDTO.fromEntity(createProduct);
     }
 }
