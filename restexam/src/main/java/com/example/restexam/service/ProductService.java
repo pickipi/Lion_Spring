@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,19 +66,6 @@ public class ProductService {
         if(productDTO.getName() != null){
             product.setName(productDTO.getName());
         }
-        // 위와 같은 방법
-        Optional.ofNullable(productDTO.getName()).ifPresent(product::setName);
-        // ifPresent() : ofNullable()을 통해 null일 경우 ifPresent를 수행
-
-//        if(productDTO.getPrice() != null){
-            // price의 타입은 double
-            // double(기본형타입 - primitive Type)과 Double(객체타입)의 차이점을 알아야한다.
-            // double 은 기본값이 0.0으로 들어옴 (하지만 상품가격이 실제로 0.0인 경우도 있을 수 있음)
-            // 따라서 productDTO.getPrice() != 0.0 과 같은 코드도 맞지 않을 것
-            // boolean으로 가격이 업데이트 되었는지의 체크를 관리할 필드도 필요할 것
-            // 마치 id값에 long이 아닌 Long을 쓰던 이유를 같이 생각해봐야한다.
-//        product.setPrice(productDTO.getPrice());
-//        }
         product.setPrice(productDTO.getPrice());
 
         return ProductDTO.fromEntity(product);

@@ -2,12 +2,15 @@ package com.example.restexam.controller;
 
 import com.example.restexam.dto.ProductDTO;
 import com.example.restexam.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
@@ -16,7 +19,8 @@ public class ProductController {
 
     // 1. 상품 저장
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO){
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO){
+        log.info(productDTO.getName());
         return ResponseEntity.ok(productService.createProduct(productDTO));
     }
 
