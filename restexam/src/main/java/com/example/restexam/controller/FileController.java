@@ -1,13 +1,11 @@
 package com.example.restexam.controller;
 
+import com.example.restexam.domain.UploadInfo;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileOutputStream;
@@ -34,9 +32,13 @@ public class FileController {
         }
     }
 
+    // curl -X POST http://localhost:8080/upload -H "Content-Type: multipart/form-data" -F "file=@C:/Temp/DumpFile/upload/pingu.jpg"  -F "info=@C:/Temp/DumpFile/upload/info.json;type=application/json"
     // 파일 업로드
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file){
+    public ResponseEntity<String> uploadFile(
+            @RequestParam("file") MultipartFile file,
+            @RequestPart(name = "info", required = false) UploadInfo uploadInfo
+    ){
         log.info("파일명 : " + file.getOriginalFilename());
 
         try(InputStream inputStream = file.getInputStream()){
