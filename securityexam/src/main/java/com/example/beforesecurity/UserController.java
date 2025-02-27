@@ -1,17 +1,23 @@
 package com.example.beforesecurity;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 public class UserController {
     @GetMapping("/hello")
-    public String hello(){
+    public String hello() throws InterruptedException{
+        log.info("UserController hello() 실행! [" + Thread.currentThread().getName() + "] [지연시간 1초]");
+        Thread.sleep(1000);
         return "hello";
     }
 
     @GetMapping("/test/hi")
-    public String hi(){
+    public String hi() throws InterruptedException{
+        log.info("UserController hi() 실행! -> [지연시간 5초]");
+        Thread.sleep(5000);
         return "hi";
     }
 }

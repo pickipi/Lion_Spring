@@ -10,11 +10,11 @@ public class FilterConfig{
     public FilterRegistrationBean<JunFilter> junFilter(){
         FilterRegistrationBean<JunFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new JunFilter());
-        registrationBean.addUrlPatterns("/test/*");
+        registrationBean.addUrlPatterns("/*");
         // URL에서 /test 밑에 필터가 요청되게끔 지정할 수 있다.
         // * 대신 특정 URL을 적어주면 그 URL에 대해서만 필터가 요청되게끔 설정가능
 
-        registrationBean.setOrder(2);
+        registrationBean.setOrder(1);
         return registrationBean;
     }
 }
