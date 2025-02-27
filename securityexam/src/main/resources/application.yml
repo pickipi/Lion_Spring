@@ -2,6 +2,11 @@ spring:
   application:
     name: securityexam
 
+  security:
+    user:
+      name: Jun
+      password: 1234
+
   datasource:
     url: jdbc:mysql://localhost:3307/jpadb
     username: like
@@ -20,3 +25,9 @@ server:
   tomcat:
     max-threads: 2 # 동시에 요청할 수 있는 최대 스레드 수
     min-spare-threads: 2 # 항상 유지할 수 있는 최소 대기 스레드 수
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
