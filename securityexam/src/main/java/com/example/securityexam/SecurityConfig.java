@@ -25,16 +25,23 @@ public class SecurityConfig {
         // 로그인 페이지와 로그인 성공 시 이동할 페이지 설정 (.formLogin())
         http
                 .authorizeHttpRequests( auth -> auth
-                        .requestMatchers("/hello","/loginForm").permitAll()
+                        .requestMatchers("/hello","/loginForm", "fail", "/test/*").permitAll()
                         .anyRequest().authenticated()
                         // 모든 요청에 대해서 인증을 요구
                 )
                 .formLogin(formLogin -> formLogin
+                        .loginProcessingUrl("/login_proc") // 기본 login
                         .loginPage("/loginForm") // 원하는 로그인 페이지 설정
                         .defaultSuccessUrl("/success") // 인증에 성공하면 가고싶은 페이지 설정
                         .failureUrl("/fail") // 인증에 실패하면 가고싶은 페이지 설정
                         .usernameParameter("userId") // 로그인 폼에서의 Input 상자의 ID부분과 일치해야함
                         .passwordParameter("password") // 로그인 폼에서의 Input 상자의 PASSWORD부분과 일치해야함
+
+                        .successHandler((request, response, authentication) -> {
+                            log.info("로그인 성공!" + authentication.getName());
+                            response.sendRedirect("/info"); // 로그인 성공 시 이동할 페이지 설정
+                        })
+
                 );
         return http.build();
     }
