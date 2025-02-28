@@ -24,6 +24,9 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // 뷰에 출력하기 위한 타임리프
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.2.RELEASE' // 뷰에 출력하기 위한 타임리프+시큐리티
+
 	implementation 'org.springframework.boot:spring-boot-starter-security' // Spring Security 적용
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'

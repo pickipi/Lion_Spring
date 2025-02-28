@@ -22,8 +22,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, UserDetailsService userDetailsService) throws Exception{
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/hello").permitAll()
+                        .requestMatchers("/hello/**", "/shop/**", "/userinfo", "/img/**", "/static/**", "/js/**", "/css/**").permitAll()
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/admin/abc").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPERUSER")
                         // hasRole() : 역할 하나만 부여
                         // hasAnyRole() : 역할 여러개 부여
 
