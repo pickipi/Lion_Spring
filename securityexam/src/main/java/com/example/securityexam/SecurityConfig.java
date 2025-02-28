@@ -42,7 +42,15 @@ public class SecurityConfig {
                             response.sendRedirect("/info"); // 로그인 성공 시 이동할 페이지 설정
                         })
 
+                        .failureHandler(((request, response, exception) -> {
+                            log.info("로그인 실패!" + exception.getMessage());
+                            response.sendRedirect("/login");
+                        }))
                 );
+
+        // 3. 로그아웃 기능 추가
+        
+
         return http.build();
     }
 }
