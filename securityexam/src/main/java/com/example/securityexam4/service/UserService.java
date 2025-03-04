@@ -2,6 +2,7 @@ package com.example.securityexam4.service;
 
 import com.example.securityexam4.domain.Role;
 import com.example.securityexam4.domain.User;
+import com.example.securityexam4.domain.UserRegisterDTO;
 import com.example.securityexam4.repository.RoleRepository;
 import com.example.securityexam4.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +36,34 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);
+    }
+
+    // registUser 메소드 오버로딩
+    @Transactional
+    public User registUser(UserRegisterDTO registerDTO){
+        log.info("회원가입 요청 처리 중: {}", registerDTO.getUsername()); // 회원가입 요청 로그 추가
+
+        String encodedPassword = passwordEncoder.encode(registerDTO.getPassword());
+        log.info("비밀번호 암호화 완료");
+
+        Set<Role> roles = registerDTO.getRoles().stream()
+                .map(roleRepository::findByName)
+                .flatMap(Optional::stream) // Optional이 비어있다면 무시 후 값만 추출
+                .collect(Collectors.toSet());
+        log.info("역할 정보 설정 완료: {}", roles);
+
+        User user = new User();
+        user.setUsername(registerDTO.getUsername());
+        user.setPassword(encodedPassword);
+        user.setName(registerDTO.getName());
+        user.setEmail(registerDTO.getEmail());
+        user.setRoles(roles);
+        log.info("User 객체 생성 완료: {}", user);
+
+        User savedUser = userRepository.save(user);
+        log.info("DB 저장 완료: {}", savedUser);
+
+        return savedUser;
     }
 
     // - username에 해당하는 사용자가 있는지 체크
