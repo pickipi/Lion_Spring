@@ -2,17 +2,23 @@ package com.example.jwtexam.test;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Slf4j
 public class JwtExample {
     public static void main(String[] args) {
-        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        // 1. 알고리즘으로 secretKey를 만드는 방법
+//        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+        // 2. 사용자 정의 secretKey를 만드는 방법 - 적절한 SecretKey(32바이트 이상)를 수동 생성
+        String secret = "abcdefghijklmnopqrstuvwxzy123456789012"; // 최소 32바이트 유지
+        byte[] bytes = secret.getBytes(StandardCharsets.UTF_8);
+        SecretKey secretKey = Keys.hmacShaKeyFor(bytes);
 
         String jwt = Jwts.builder()
                 .setIssuer("juunb-app") // 어디서 사용하는 것인지 설정
