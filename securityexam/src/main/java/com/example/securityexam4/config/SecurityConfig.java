@@ -40,6 +40,11 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
                 )
+                .sessionManagement(session -> session
+                        .maximumSessions(1) // 동시 접속 가능한 세션 수 설정 - ex. 3이면 3개 이상 세션부터는 로그인 유지를 하지 않음
+                        .maxSessionsPreventsLogin(false) // 첫번째 로그인된 사용자가 차단됨
+
+                )
                 .userDetailsService(customUserDetailsService);
 
         return http.build();
