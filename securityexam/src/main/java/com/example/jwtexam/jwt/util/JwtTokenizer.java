@@ -78,6 +78,14 @@ public class JwtTokenizer {
                 .getBody();
     }
 
+    public Claims parseAccessToken(String accessToken){
+        return parseToken(accessToken, accessSecret);
+    }
+
+    public Claims parseRefreshToken(String refreshToken){
+        return parseToken(refreshToken, refreshSecret);
+    }
+
     // DB에서 ID를 통해 토큰 얻어내기
     public Long getUserIdFromToken(String token){
         // Bearer 라는 토큰형태를 사용하여 헤더정보에 보냄 (Bearer 토큰을 이용)
