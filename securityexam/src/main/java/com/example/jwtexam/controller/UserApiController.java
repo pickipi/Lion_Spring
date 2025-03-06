@@ -8,6 +8,7 @@ import com.example.jwtexam.jwt.util.JwtTokenizer;
 import com.example.jwtexam.security.dto.UserLoginDto;
 import com.example.jwtexam.service.RefreshTokenService;
 import com.example.jwtexam.service.UserService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -65,6 +66,24 @@ public class UserApiController {
         refreshTokenEntity.setUserId(user.getId());
 
         refreshTokenService.addRefreshToken(refreshTokenEntity);
+
+        // 5-1) 쿠키에도 저장
+        Cookie accessTokenCookie = new Cookie("accessToken", accessToken);
+        // http에서만 사용가능 (보안 설정) = 쿠키 값을 자바스크립트 등에서는 접근 불가
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setPath("/");
+        // 쿠키의 시간단위 : 초(sec) 단위, ACCESS_TOKEN_EXPIRE_COUNT는 Long타입에 밀리초(ms) 단위
+        // 이 둘을 맞춰주어야함 -> Math.toIntExact : Long타입을 int타입으로 안전하게 바꿔줌
+        // /1000 : 초 단위로 맞춰줌
+        accessTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.ACCESS_TOKEN_EXPIRE_COUNT/1000));
+
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.REFRESH_TOKEN_EXPIRE_COUNT/1000));
+
+        response.addCookie(accessTokenCookie);
+        response.addCookie(refreshTokenCookie);
 
         // 6. 응답으로 보낼 값 준비
         UserLoginResponseDto loginResponseDto = UserLoginResponseDto.builder()
