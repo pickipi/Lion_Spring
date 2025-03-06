@@ -68,4 +68,36 @@ public class JwtTokenizer {
 
         return createToken(id, email, name, username, roles, REFRESH_TOKEN_EXPIRE_COUNT, refreshSecret);
     }
+
+    // 토큰 정보를 꺼내오는 메소드
+    public Claims parseToken(String token, byte[] secretKey){
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey(secretKey))
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    // DB에서 ID를 통해 토큰 얻어내기
+    public Long getUserIdFromToken(String token){
+        // Bearer 라는 토큰형태를 사용하여 헤더정보에 보냄 (Bearer 토큰을 이용)
+        // [Bearer exJDq23eDAsdnkkqo3SDAllkoisi...] 같은 토큰 형태
+        if(token == null || token.isBlank()){
+            throw new IllegalArgumentException("JWT 토큰이 없습니다.");
+        }
+
+        if(token.startsWith("Bearer ")){ // Bearer 로 시작하는 토큰이 아닌 경우
+            throw new IllegalArgumentException("유효하지 않은 형식입니다.");
+        }
+        Claims claims = parseToken(token, accessSecret);
+        if(claims == null){
+            throw new IllegalArgumentException("유효하지 않은 형식입니다.");
+        }
+        Object userId = claims.get("userId"); // claims.put("userId", id) 의 "userID"형식에 맞춰서 꺼내줌
+        if(userId instanceof Number){ // userId 타입이 Number인지 검사
+            return ((Number)userId).longValue(); // Number이면 long타입으로 형변환 후 리턴
+        }else{
+            throw new IllegalArgumentException("JWT 토큰에서 userId를 찾을 수 없습니다.");
+        }
+    }
 }
