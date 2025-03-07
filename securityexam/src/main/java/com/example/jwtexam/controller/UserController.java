@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class UserController {
-    @GetMapping("/mypage")
+    @GetMapping("/api/mypage")
     public String mypage(){
         return "home";
     }
