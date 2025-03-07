@@ -101,4 +101,8 @@ public class UserApiController {
 
         return ResponseEntity.ok(loginResponseDto);
     }
+
+    // AccessToken만료 전 RefreshToken을 통해 검증 후 AccessToken 재발급
+//    @PostMapping("refreshToken")
+//    public ResponseEntity<?> requestRefresh(){ ... }
 }
