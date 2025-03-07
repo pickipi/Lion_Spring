@@ -1,5 +1,6 @@
 package com.example.jwtexam.config;
 
+import com.example.jwtexam.jwt.exception.CustomAuthenticationEntryPoint;
 import com.example.jwtexam.jwt.filter.JwtAuthenticationFilter;
 import com.example.jwtexam.jwt.util.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtTokenizer jwtTokenizer;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -33,7 +35,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/login", "/loginform").permitAll()
                         .anyRequest().authenticated()
 
                 )
@@ -45,7 +47,10 @@ public class SecurityConfig {
 
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())
-                .cors(cors -> cors.configurationSource(configurationSource()));
+                .cors(cors -> cors.configurationSource(configurationSource()))
+
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthenticationEntryPoint));
 
         return http.build();
     }

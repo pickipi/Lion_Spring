@@ -1,9 +1,13 @@
 package com.example.jwtexam.jwt.filter;
 
+import com.example.jwtexam.jwt.exception.JwtExceptionCode;
 import com.example.jwtexam.jwt.token.JwtAuthenticationToken;
 import com.example.jwtexam.jwt.util.JwtTokenizer;
 import com.example.jwtexam.security.dto.CustomUserDetails;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -38,10 +42,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try{
                 Authentication authentication = getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+            }catch (ExpiredJwtException e){ // 예외 추가 (JwtExceptionEnum으로부터)
+                request.setAttribute("exception", JwtExceptionCode.EXPIRED_TOKEN.getCode());
+                log.error("Expired Token : {}",token,e);
+                SecurityContextHolder.clearContext();
+                throw new BadCredentialsException("Expired token exception", e);
+            }catch (UnsupportedJwtException e){
+                request.setAttribute("exception", JwtExceptionCode.UNSUPPORTED_TOKEN.getCode());
+                log.error("Unsupported Token: {}", token, e);
+                SecurityContextHolder.clearContext();
+                throw new BadCredentialsException("Unsupported token exception", e);
+            } catch (MalformedJwtException e) {
+                request.setAttribute("exception", JwtExceptionCode.INVALID_TOKEN.getCode());
+                log.error("Invalid Token: {}", token, e);
 
-                // 필터가 실행되기 위해서 해야할 일
-                // - 필터를 생성해서 SecurityConfig에 필터를 추가해주어야할 것
-                // Filter는 즉 Security와 함께 실행되어야하는 것
+                SecurityContextHolder.clearContext();
+
+                throw new BadCredentialsException("Invalid token exception", e);
+            } catch (IllegalArgumentException e) {
+                request.setAttribute("exception", JwtExceptionCode.NOT_FOUND_TOKEN.getCode());
+                log.error("Token not found: {}", token, e);
+
+                SecurityContextHolder.clearContext();
+
+                throw new BadCredentialsException("Token not found exception", e);
             }catch (Exception e){
                 log.error("JWT Filter - Internal Error: {}", token, e);
                 SecurityContextHolder.clearContext();
@@ -51,6 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
     private Authentication getAuthentication(String token){
         Claims claims = jwtTokenizer.parseAccessToken(token);
         String email = claims.getSubject();
