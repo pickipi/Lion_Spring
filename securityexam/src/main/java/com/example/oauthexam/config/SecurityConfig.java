@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/oauth/users/loginform", "/loginform","/userregform", "/").permitAll()
                         .requestMatchers("/oauth2/**", "/login/oauth2/code/github", "/registerSocialUser", "/saveSocialUser").permitAll()// 기본지정해주어야하는 약속들, 이 형태는 정해진 형태 (/login/oauth2/code/github)
+                        .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
 
                 )
@@ -56,15 +57,16 @@ public class SecurityConfig {
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService(){
         DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
-        return OAuth2UserRequest -> {
-            OAuth2User oAuth2User = delegate.loadUser(OAuth2UserRequest);
+        return oauth2UserRequest -> {
+            OAuth2User oAuth2User = delegate.loadUser(oauth2UserRequest);
 
             // 소셜로그인이 되었을때 해당 소셜의 유저 정보를 얻어올 수 있으므로
             // 그 정보를 처리하는 로직을 작성 - 제공자, 소셜ID를 얻어옴
             // 토큰도 필요 시 얻어올 수 있음
-//            String token = OAuth2UserRequest.getAccessToken().getTokenValue();
-            String provider = OAuth2UserRequest.getClientRegistration().getRegistrationId();
-            String socialId = (String) oAuth2User.getAttributes().get("id");
+            String token = oauth2UserRequest.getAccessToken().getTokenValue();
+
+            String provider = oauth2UserRequest.getClientRegistration().getRegistrationId();
+            String socialId = String.valueOf(oAuth2User.getAttributes().get("id"));
             String username = (String) oAuth2User.getAttributes().get("login");
             String email = (String) oAuth2User.getAttributes().get("email");
             String avatarUrl = (String) oAuth2User.getAttributes().get("avatar_url");

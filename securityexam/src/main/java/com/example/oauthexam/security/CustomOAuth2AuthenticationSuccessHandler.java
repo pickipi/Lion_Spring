@@ -76,8 +76,8 @@ public class CustomOAuth2AuthenticationSuccessHandler implements AuthenticationS
 
             // 2. 소셜로 회원가입이 되지 않은 상태일때 "회원가입 페이지"로 리다이렉트
             // 사용자가 소셜로그인으로 앱에 처음들어왔을때 사용자의 정보를 앱의 Service에도 남겨두고 싶을때
-            // 소셜 로그인 정보를 저장함 (/?provider 형식으로 provider를 controller에 넘김, &로 넘기고 싶은 나머지 값들을 한 줄로 연결시킴
-            response.sendRedirect("/registerSocialUser?/provider="+provider+"&socialId="
+            // 소셜 로그인 정보를 저장함 (?provider 형식으로 provider를 controller에 넘김, &로 넘기고 싶은 나머지 값들을 한 줄로 연결시킴
+            response.sendRedirect("/registerSocialUser?provider="+provider+"&socialId="
                     +socialId+"&name="+name+"&uuid="+socialLoginInfo.getUuid());
         }
     }
