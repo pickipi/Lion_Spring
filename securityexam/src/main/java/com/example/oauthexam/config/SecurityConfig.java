@@ -31,7 +31,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/loginform","/userregform", "/").permitAll()
+                        .requestMatchers("/oauth/users/loginform", "/loginform","/userregform", "/").permitAll()
                         .requestMatchers("/oauth2/**", "/login/oauth2/code/github", "/registerSocialUser", "/saveSocialUser").permitAll()// 기본지정해주어야하는 약속들, 이 형태는 정해진 형태 (/login/oauth2/code/github)
                         .anyRequest().authenticated()
 

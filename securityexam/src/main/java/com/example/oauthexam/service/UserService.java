@@ -14,10 +14,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
+//    private final PasswordEncoder passwordEncoder; // 순환참조 문제 발생
     @Transactional
-    public User saveUser(SocialUserRequestDto requestDto){
+    public User saveUser(SocialUserRequestDto requestDto, PasswordEncoder passwordEncoder){
         User user = new User();
         user.setUsername(requestDto.getUsername());
         user.setName(requestDto.getName());
