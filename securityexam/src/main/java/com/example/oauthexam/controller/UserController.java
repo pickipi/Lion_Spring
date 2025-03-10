@@ -6,6 +6,7 @@ import com.example.oauthexam.entity.SocialLoginInfo;
 import com.example.oauthexam.entity.User;
 import com.example.oauthexam.service.SocialLoginInfoService;
 import com.example.oauthexam.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -52,7 +53,8 @@ public class UserController {
     }
 
     @PostMapping("/saveSocialUser")
-    public String saveSocialUser(@ModelAttribute SocialUserRequestDto requestDto){
+    public String saveSocialUser(@ModelAttribute SocialUserRequestDto requestDto,
+                                 HttpServletRequest request){
         Optional<SocialLoginInfo> socialLoginInfoOptional = socialLoginInfoService.findByProviderAndUuidAndSocialId(
                 requestDto.getProvider(), requestDto.getUuid(), requestDto.getSocialId());
 
@@ -67,6 +69,7 @@ public class UserController {
 
             User savedUser = userService.saveUser(requestDto, passwordEncoder);
             request.getSession().setAttribute("user", savedUser);
+
             return"redirect:/info";
         }
         else{ // 정보가 없다면
