@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User,Long> {
     User findByUsername(String username);
     Optional<User> findByProviderAndSocialId(String provider, String socialId);
+    // Provier와 SocialId를 가지고 로그인 가능하게 해야함
 }
