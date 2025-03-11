@@ -2,7 +2,6 @@ package com.example.oauthexam.security;
 
 import com.example.oauthexam.entity.SocialLoginInfo;
 import com.example.oauthexam.entity.User;
-import com.example.oauthexam.entity.Role;
 import com.example.oauthexam.service.SocialLoginInfoService;
 import com.example.oauthexam.service.UserService;
 import jakarta.servlet.ServletException;
@@ -61,7 +60,8 @@ public class CustomOAuth2AuthenticationSuccessHandler implements AuthenticationS
                     user.getName(),
                     user.getRoles()// Roles는 Set<Role> roles 처럼 들어가있을 것 -> 따라서 stream()으로 꺼냄
                             .stream()
-                            .map(Role::getName)
+//                            .map(Role::getName)
+                            .map(role -> "ROLE_" + role.getName())// Security는 기본적으로 ROLE_ (언더바) 규칙의 권한을 사용함
                             .collect(Collectors.toList())
             );
 

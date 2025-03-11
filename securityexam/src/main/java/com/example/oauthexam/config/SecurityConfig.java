@@ -34,8 +34,9 @@ public class SecurityConfig {
                         .requestMatchers("/oauth/users/loginform", "/loginform","/userregform", "/").permitAll()
                         .requestMatchers("/oauth2/**", "/login/oauth2/code/github", "/registerSocialUser", "/saveSocialUser").permitAll()// 기본지정해주어야하는 약속들, 이 형태는 정해진 형태 (/login/oauth2/code/github)
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // admin으로 시작하는 모든 URL
+                        .requestMatchers("/shop/**").hasRole("USER") // shop으로 시작하는 모든 URL
                         .anyRequest().authenticated()
-
                 )
                 .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form.disable())

@@ -8,7 +8,9 @@ import com.example.oauthexam.service.SocialLoginInfoService;
 import com.example.oauthexam.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -59,6 +62,7 @@ public class UserController {
                 requestDto.getProvider(), requestDto.getUuid(), requestDto.getSocialId());
 
         if(socialLoginInfoOptional.isPresent()){
+            log.info("socialLoginInfoOptional.isPresent()" + socialLoginInfoOptional.isPresent());
             SocialLoginInfo socialLoginInfo = socialLoginInfoOptional.get();
             LocalDateTime now = LocalDateTime.now(); // 현재 시간 구하기
             Duration duration = Duration.between(socialLoginInfo.getCreateAt(), now); // 소셜로그인 정보가 생긴 시간과 현재 시간을 비교
@@ -79,8 +83,14 @@ public class UserController {
 
     @GetMapping("/info")
     public String info(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model){
-        model.addAttribute("user", customUserDetails);
+        // 리팩토링
+//        if (customUserDetails == null) {
+//            return "redirect:/login"; // 인증되지 않은 경우 로그인 페이지로 이동
+//        }
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        log.info("Check the InfoPage's Log - " + principal);
 
+        model.addAttribute("user", principal);
         return "oauth/info";
     }
 
