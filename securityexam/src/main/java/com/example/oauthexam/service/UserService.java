@@ -25,6 +25,8 @@ public class UserService {
         user.setProvider(requestDto.getProvider());
         user.setPassword(passwordEncoder.encode("")); // 소셜 로그인으로 진행하는 사용자는 비밀번호를 비워둠
 
+        
+
         return userRepository.save(user);
     }
 

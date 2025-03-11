@@ -49,6 +49,11 @@ public class SecurityConfig {
                         )
                         // 소셜 인증 성공 후 수행할 일
                         .successHandler(customOAuth2AuthenticationSuccessHandler)
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/") // 로그아웃이 성공적으로 이루어졌을때 ("/" = /home)으로 갈 것
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID") // JSESSIONID의 쿠키를 삭제
                 );
 
         return http.build();
