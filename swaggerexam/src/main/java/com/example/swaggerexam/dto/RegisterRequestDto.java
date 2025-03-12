@@ -1,10 +1,9 @@
 package com.example.swaggerexam.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter@Setter
+@Data
 @Schema(description = "회원가입 요청 DTO") // Swagger의 어노테이션
 public class RegisterRequestDto {
     // 데이터가 들어가는 부분에 샘플데이터를 지정해서 넣어줄 수 있음
