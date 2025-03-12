@@ -1,4 +1,4 @@
-package com.example.meetingproject.domain;
+package com.example.swaggerexam.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;

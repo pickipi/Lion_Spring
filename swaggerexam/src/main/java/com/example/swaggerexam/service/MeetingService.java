@@ -1,10 +1,10 @@
-package com.example.meetingproject.service;
+package com.example.swaggerexam.service;
 
-import com.example.meetingproject.domain.Meeting;
-import com.example.meetingproject.domain.MeetingMember;
-import com.example.meetingproject.domain.User;
-import com.example.meetingproject.repository.MeetingMemberRepository;
-import com.example.meetingproject.repository.MeetingRepository;
+import com.example.swaggerexam.domain.Meeting;
+import com.example.swaggerexam.domain.MeetingMember;
+import com.example.swaggerexam.domain.User;
+import com.example.swaggerexam.repository.MeetingMemberRepository;
+import com.example.swaggerexam.repository.MeetingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +51,28 @@ public class MeetingService {
         return meetingRepository.save(meeting);
     }
 
+    // 모임 참가 - 사용자가 모임에 참가
+    public void joinMeeting(Meeting meeting, User user) {
+        // 이미 참가한 사용자 확인
+        boolean alreadyJoined = meetingMemberRepository.existsByMeetingAndUser(meeting, user);
+        if (alreadyJoined) { // exists 결과 -> true -> 이미 참가한 사용자 (alreadyJoined)
+            throw new IllegalArgumentException("이미 이 모임에 참가한 사용자 ["+user+"]입니다.");
+        }
+
+        // MeetingMember 생성 및 저장
+        MeetingMember meetingMember = new MeetingMember(); // 새로운 (모임 멤버)그룹을 만듦
+        meetingMember.setMeeting(meeting); // 모임에는 받아온 모임으로 주입
+        meetingMember.setUser(user); // 사용자에는 받아온 사용자로 주입
+        meetingMemberRepository.save(meetingMember);
+    }
+
+    // 모임 탈퇴
+    public void leaveMeeting(Meeting meeting, User user) {
+        MeetingMember meetingMember = meetingMemberRepository.findByMeetingAndUser(meeting, user)
+                .orElseThrow(() -> new IllegalArgumentException("["+user+"]가 참가한 모임 정보를 찾을 수 없습니다."));
+        meetingMemberRepository.delete(meetingMember);
+    }
+
     // 모임 목록 조회 (=사용자 생성/참여한 모임)
     public List<Meeting> findAllMeetingsByUser(User user) {
         return meetingMemberRepository.findByUser(user)
@@ -67,6 +89,13 @@ public class MeetingService {
                 .collect(Collectors.toList());
     }
 
+    // 현재 참가자 수
+    public int getCurrentParticipants(Meeting meeting) {
+        return meetingMemberRepository.countByMeeting(meeting);
+    }
+
+
+    // 모임 이름으로 모임 검색
     public Optional<Meeting> findMeetingByName(String name){
         return meetingRepository.findByName(name); // 특정 모임을 이름으로 검색
     }

@@ -1,14 +1,16 @@
-package com.example.meetingproject.service;
+package com.example.swaggerexam.service;
 
-import com.example.meetingproject.domain.User;
-import com.example.meetingproject.repository.UserRepository;
+import com.example.swaggerexam.domain.User;
+import com.example.swaggerexam.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // 사용자 회원 가입
     public User registerUser(String email, String password){
@@ -17,7 +19,7 @@ public class UserService {
         }
         User user = new User();
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         return userRepository.save(user);
     }
 
@@ -25,5 +27,10 @@ public class UserService {
     public User findUserByEmail(String email){
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("["+email+"]에 해당하는 유저를 찾을 수 없습니다."));
+    }
+
+    // 비밀번호 검증 메소드
+    public boolean checkPassword(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 }

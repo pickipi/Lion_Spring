@@ -1,6 +1,6 @@
-package com.example.meetingproject.repository;
+package com.example.swaggerexam.repository;
 
-import com.example.meetingproject.domain.Meeting;
+import com.example.swaggerexam.domain.Meeting;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
