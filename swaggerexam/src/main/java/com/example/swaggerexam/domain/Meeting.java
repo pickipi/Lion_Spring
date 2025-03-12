@@ -33,4 +33,15 @@ public class Meeting {
 //    Meeting 엔티티의 createdBy 필드는 User 엔티티를 참조하므로,
 //    JPA는 이를 기반으로 두 테이블 간의 외래 키 관계를 자동으로 생성
 //    즉, createdBy 필드는 users 테이블의 id 컬럼과 연결
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }
