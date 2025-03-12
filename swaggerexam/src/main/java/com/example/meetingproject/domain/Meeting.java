@@ -14,7 +14,7 @@ public class Meeting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "meeting_name", unique = true, nullable = false)
     private String name; // 모임 이름
 
     @Column(nullable = true) // 모임 생성 시 설명 제공하지 않아도됨
@@ -27,10 +27,10 @@ public class Meeting {
     private LocalDateTime updatedAt; // 모임 수정날짜
 
     // 누구에 의해 만들어졌는지 - 모임 생성한 사람
-    @ManyToOne
+    @ManyToOne // 한 사람이 여러 모임 가능
     @JoinColumn(name = "created_by", nullable = false) // 외래 키 설정
     private User createdBy;
-//    Meeting 엔티티의 createdBy 필드는 User 엔티티를 참조하므로, J
+//    Meeting 엔티티의 createdBy 필드는 User 엔티티를 참조하므로,
 //    JPA는 이를 기반으로 두 테이블 간의 외래 키 관계를 자동으로 생성
 //    즉, createdBy 필드는 users 테이블의 id 컬럼과 연결
 }
