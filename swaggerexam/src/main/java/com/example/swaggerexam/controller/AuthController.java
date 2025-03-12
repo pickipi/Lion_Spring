@@ -41,8 +41,10 @@ public class AuthController {
             @Parameter(description = "JWT 인증 토큰", required = true, example = "Bearer eyJhbGciOiJIUzI....")
             @RequestHeader("Authorization") String token
     ){
-
-
+        if(token.startsWith("Bearer ")){
+            token = token.substring(7);
+        }
+//        JwtUtil.invalidateToken(token);
         return ResponseEntity.ok("로그아웃 성공");
     }
 
