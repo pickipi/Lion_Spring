@@ -4,6 +4,7 @@ import com.example.swaggerexam.domain.User;
 import com.example.swaggerexam.repository.UserRepository;
 import com.example.swaggerexam.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     // 사용자 회원 가입
+    @Transactional
     public User register(String email, String password){
         if(userRepository.findByEmail(email).isPresent()){ // 이메일로 조회 후 이메일 중복 체크
             throw new IllegalArgumentException("["+email+"]이미 존재하는 이메일입니다.");
@@ -28,12 +30,14 @@ public class UserService {
     }
 
     // 사용자 조회 (이메일 기준)
+    @Transactional(readOnly = true)
     public User findUserByEmail(String email){
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("["+email+"]에 해당하는 유저를 찾을 수 없습니다."));
     }
 
     // 사용자 조회 (ID 기준)
+    @Transactional(readOnly = true)
     public User findUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("ID ["+userId+"]의 유저를 찾을 수 없습니다."));

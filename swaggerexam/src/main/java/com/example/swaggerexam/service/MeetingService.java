@@ -5,7 +5,7 @@ import com.example.swaggerexam.domain.MeetingMember;
 import com.example.swaggerexam.domain.User;
 import com.example.swaggerexam.repository.MeetingMemberRepository;
 import com.example.swaggerexam.repository.MeetingRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +28,7 @@ public class MeetingService {
     }
 
     // 모임 삭제 (DELETE)
+    @Transactional
     public void deleteMeeting(Long meetingId, User currentUser) { // 모임의 id로 검색
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new IllegalArgumentException("모임을 찾을 수 없습니다."));
@@ -39,6 +40,7 @@ public class MeetingService {
     }
 
     // 모임 수정 (UPDATE)
+    @Transactional
     public Meeting updateMeeting(Long meetingId, Meeting updatedMeeting, User currentUser) {
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new IllegalArgumentException("모임을 찾을 수 없습니다."));
@@ -70,6 +72,7 @@ public class MeetingService {
     }
 
     // 모임 탈퇴
+    @Transactional
     public void leaveMeeting(Meeting meeting, User user) {
         MeetingMember meetingMember = meetingMemberRepository.findByMeetingAndUser(meeting, user)
                 .orElseThrow(() -> new IllegalArgumentException("["+user+"]가 참가한 모임 정보를 찾을 수 없습니다."));
@@ -77,6 +80,7 @@ public class MeetingService {
     }
 
     // 모임 목록 조회 (=사용자 생성/참여한 모임)
+    @Transactional(readOnly = true)
     public List<Meeting> findAllMeetingsByUser(User user) {
         return meetingMemberRepository.findByUser(user)
                 .stream()
@@ -85,18 +89,21 @@ public class MeetingService {
     }
 
     // 모든 모임 조회
+    @Transactional(readOnly = true)
     public List<Meeting> getAllMeetings() {
         return meetingRepository.findAll();
     }
 
     // 모임 찾기 (ID 기준)
     // ID로 모임 찾기
+    @Transactional(readOnly = true)
     public Meeting findMeetingById(Long meetingId) {
         return meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new IllegalArgumentException("모임을 찾을 수 없습니다."));
     }
 
     // 모임에 참가한 사용자 목록 반환
+    @Transactional(readOnly = true)
     public List<User> findParticipantsByMeeting(Meeting meeting) {
         return meetingMemberRepository.findByMeeting(meeting)
                 .stream()
@@ -104,14 +111,15 @@ public class MeetingService {
                 .collect(Collectors.toList());
     }
 
+    // 모임 이름으로 모임 검색
+    @Transactional(readOnly = true)
+    public Optional<Meeting> findMeetingByName(String name){
+        return meetingRepository.findByName(name); // 특정 모임을 이름으로 검색
+    }
+
     // 현재 참가자 수
     public int getCurrentParticipants(Meeting meeting) {
         return meetingMemberRepository.countByMeeting(meeting);
     }
 
-
-    // 모임 이름으로 모임 검색
-    public Optional<Meeting> findMeetingByName(String name){
-        return meetingRepository.findByName(name); // 특정 모임을 이름으로 검색
-    }
 }

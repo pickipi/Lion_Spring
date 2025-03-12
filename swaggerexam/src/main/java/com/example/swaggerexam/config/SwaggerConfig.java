@@ -39,7 +39,8 @@ public class SwaggerConfig {
                         )
                         .authorizeHttpRequests(authorizeRequests ->
                                 authorizeRequests
-                                        .requestMatchers("/auth/register", "/auth/login").permitAll()
+                                        .requestMatchers("/auth/**", "/meetings/**").permitAll()
+                                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Swagger UI 경로 허용
                                         .anyRequest().authenticated()
                         );
                 return http.build();

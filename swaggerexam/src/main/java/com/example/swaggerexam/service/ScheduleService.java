@@ -4,7 +4,7 @@ import com.example.swaggerexam.domain.*;
 import com.example.swaggerexam.repository.MeetingRepository;
 import com.example.swaggerexam.repository.ScheduleMemberRepository;
 import com.example.swaggerexam.repository.ScheduleRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +42,7 @@ public class ScheduleService {
     }
 
     // 일정 탈퇴
+    @Transactional
     public void leaveSchedule(Schedule schedule, User user) {
         ScheduleMember scheduleMember = scheduleMemberRepository.findByScheduleAndUser(schedule, user)
                 .orElseThrow(() -> new IllegalArgumentException("["+user+"]가 참가한 일정 정보를 찾을 수 없습니다."));
@@ -54,6 +55,7 @@ public class ScheduleService {
     }
 
     // 일정 참가자 조회
+    @Transactional(readOnly = true)
     public List<User> getScheduleParticipants(Schedule schedule) {
         return scheduleMemberRepository.findBySchedule(schedule)
                 .stream()
@@ -62,12 +64,14 @@ public class ScheduleService {
     }
 
     // 일정 조회 (ID 기준)
+    @Transactional(readOnly = true)
     public Schedule findById(Long scheduleId) {
         return scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new IllegalArgumentException("ID ["+scheduleId+"]의 일정을 찾을 수 없습니다."));
     }
 
     // 특정 모임의 모든 일정 조회
+    @Transactional(readOnly = true)
     public List<Schedule> findSchedulesByMeetingId(Long meetingId) {
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID의 모임을 찾을 수 없습니다."));
@@ -76,6 +80,7 @@ public class ScheduleService {
     }
 
     // 일정의 상태 수정
+    @Transactional
     public void updateScheduleStatus(Schedule schedule, User user, ScheduleStatus newStatus) {
         ScheduleMember scheduleMember = scheduleMemberRepository.findByScheduleAndUser(schedule, user)
                 .orElseThrow(() -> new IllegalArgumentException("일정에 참가한 기록이 없습니다."));
