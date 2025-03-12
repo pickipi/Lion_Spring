@@ -8,6 +8,9 @@ import com.example.swaggerexam.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
@@ -33,6 +36,14 @@ public class ScheduleService {
         scheduleMember.setSchedule(schedule);
         scheduleMember.setUser(user);
         scheduleMemberRepository.save(scheduleMember);
+    }
+
+    // 일정 참가자 조회
+    public List<User> getScheduleParticipants(Schedule schedule) {
+        return scheduleMemberRepository.findBySchedule(schedule)
+                .stream()
+                .map(ScheduleMember::getUser)
+                .collect(Collectors.toList());
     }
 }
 
