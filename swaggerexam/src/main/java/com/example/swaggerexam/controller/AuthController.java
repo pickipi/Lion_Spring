@@ -3,18 +3,28 @@ package com.example.swaggerexam.controller;
 import com.example.swaggerexam.dto.LoginRequestDto;
 import com.example.swaggerexam.dto.RegisterRequestDto;
 import com.example.swaggerexam.dto.UserDto;
+import com.example.swaggerexam.service.UserService;
+import com.example.swaggerexam.util.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
+// 로그인/회원가입/로그아웃/User관리
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "Authentication", description = "인증 관련 API")
+@RequiredArgsConstructor
 public class AuthController {
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
+
     @Operation(
             summary = "회원가입",
             description = "이메일과 비밀번호를 입력하여 회원가입을 합니다.",
@@ -22,18 +32,21 @@ public class AuthController {
     )
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequestDto requestDto){
-
-        //여기 로직은 나중에 여러분이 완성해주세요.
-
-        return ResponseEntity.ok("ok");
+        try {
+            userService.register(requestDto.getEmail(), requestDto.getPassword());
+            return ResponseEntity.ok("회원가입 성공!");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto requestDto){
-
-        //로그인이 수행될때 할일 구현
-
-        return ResponseEntity.ok("ok");
+        String token = userService.login(requestDto.getEmail(), requestDto.getPassword());
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("이메일 또는 비밀번호가 올바르지 않습니다.");
+        }
+        return ResponseEntity.ok(Collections.singletonMap("token", token));
     }
 
     @PostMapping("/logout")
@@ -44,7 +57,7 @@ public class AuthController {
         if(token.startsWith("Bearer ")){
             token = token.substring(7);
         }
-//        JwtUtil.invalidateToken(token);
+        jwtUtil.invalidateToken(token);
         return ResponseEntity.ok("로그아웃 성공");
     }
 
@@ -63,5 +76,4 @@ public class AuthController {
 //        UserDto user = userService.getUserById(id);
         return ResponseEntity.ok(null);
     }
-
 }
