@@ -5,6 +5,7 @@ import com.example.swaggerexam.domain.MeetingMember;
 import com.example.swaggerexam.domain.User;
 import com.example.swaggerexam.repository.MeetingMemberRepository;
 import com.example.swaggerexam.repository.MeetingRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class MeetingService {
     private final MeetingMemberRepository meetingMemberRepository;
 
     // 모임 추가 (CREATE)
+    @Transactional
     public Meeting createMeeting(Meeting meeting){
         // 모임 저장 로직
 
@@ -52,6 +54,7 @@ public class MeetingService {
     }
 
     // 모임 참가 - 사용자가 모임에 참가
+    @Transactional
     public void joinMeeting(Meeting meeting, User user) {
         // 이미 참가한 사용자 확인
         boolean alreadyJoined = meetingMemberRepository.existsByMeetingAndUser(meeting, user);
@@ -79,6 +82,18 @@ public class MeetingService {
                 .stream()
                 .map(MeetingMember::getMeeting)
                 .collect(Collectors.toList());
+    }
+
+    // 모든 모임 조회
+    public List<Meeting> getAllMeetings() {
+        return meetingRepository.findAll();
+    }
+
+    // 모임 찾기 (ID 기준)
+    // ID로 모임 찾기
+    public Meeting findMeetingById(Long meetingId) {
+        return meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new IllegalArgumentException("모임을 찾을 수 없습니다."));
     }
 
     // 모임에 참가한 사용자 목록 반환
