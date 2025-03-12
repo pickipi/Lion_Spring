@@ -1,16 +1,62 @@
+#spring:
+#  application:
+#    name: swaggerexam
+#
+#  datasource:
+#    url: jdbc:mysql://localhost:3307/swaggerdb
+#    username: like
+#    password: lion
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    jpa:
+#      hibernate:
+#        ddl-auto: update
+#      show-sql: true
+#      properties:
+#        hibernate:
+#          format_sql: true
+
 spring:
   application:
     name: swaggerexam
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id:
+            client-secret:
+            scope:
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-name: GitHub
+        provider:
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+            user-name-attribute: id
 
   datasource:
     url: jdbc:mysql://localhost:3307/swaggerdb
     username: like
     password: lion
     driver-class-name: com.mysql.cj.jdbc.Driver
-    jpa:
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
       hibernate:
-        ddl-auto: update
-      show-sql: true
-      properties:
-        hibernate:
-          format_sql: true
+        format_sql: true
+
+server:
+  tomcat:
+    max-threads: 2 # 동시에 요청할 수 있는 최대 스레드 수
+    min-spare-threads: 2 # 항상 유지할 수 있는 최소 대기 스레드 수
+
+jwt:
+  secretKey: 12345678901234567890123456789012
+  refreshKey: 12345678901234567890123456789012

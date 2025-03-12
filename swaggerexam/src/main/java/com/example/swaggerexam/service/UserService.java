@@ -23,7 +23,7 @@ public class UserService {
         }
         User user = new User();
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         return userRepository.save(user);
     }
 
@@ -31,6 +31,12 @@ public class UserService {
     public User findUserByEmail(String email){
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("["+email+"]에 해당하는 유저를 찾을 수 없습니다."));
+    }
+
+    // 사용자 조회 (ID 기준)
+    public User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("ID ["+userId+"]의 유저를 찾을 수 없습니다."));
     }
 
     // 로그인
