@@ -38,6 +38,18 @@ public class ScheduleService {
         scheduleMemberRepository.save(scheduleMember);
     }
 
+    // 일정 탈퇴
+    public void leaveSchedule(Schedule schedule, User user) {
+        ScheduleMember scheduleMember = scheduleMemberRepository.findByScheduleAndUser(schedule, user)
+                .orElseThrow(() -> new IllegalArgumentException("["+user+"]가 참가한 일정 정보를 찾을 수 없습니다."));
+        scheduleMemberRepository.delete(scheduleMember);
+
+        // 참가자 수가 0명이면 일정 삭제
+        if (scheduleMemberRepository.countBySchedule(schedule) == 0) {
+            scheduleRepository.delete(schedule);
+        }
+    }
+
     // 일정 참가자 조회
     public List<User> getScheduleParticipants(Schedule schedule) {
         return scheduleMemberRepository.findBySchedule(schedule)
