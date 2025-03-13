@@ -80,4 +80,40 @@ public class MeetingController {
         meetingService.joinMeeting(meeting, user);
         return ResponseEntity.ok("모임 참가 완료!");
     }
+
+
+    // 모임 수정 (모임을 만든 생성자만 가능)
+    @Operation(summary = "모임 수정(생성자만)", description = "이 모임을 만든 생성자만이 모임을 수정합니다.")
+    @PutMapping("/{meetingId}")
+    public ResponseEntity<Meeting> updateMeeting(
+            @PathVariable("meetingId") Long meetingId,
+            @RequestHeader("Authorization") String token,
+            @RequestBody Meeting updatedMeeting) {
+
+        Long userId = jwtUtil.validateToken(token.replace("Bearer ", ""));
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User user = userService.findUserById(userId);
+        Meeting meeting = meetingService.updateMeeting(meetingId, updatedMeeting, user);
+        return ResponseEntity.ok(meeting);
+    }
+
+    // 모임 삭제 (모임을 만든 생성자만 가능)
+    @Operation(summary = "모임 삭제(생성자만)", description = "이 모임을 만든 생성자만이 모임을 삭제합니다.")
+    @DeleteMapping("/{meetingId}")
+    public ResponseEntity<Void> deleteMeeting(
+            @PathVariable("meetingId") Long meetingId,
+            @RequestHeader("Authorization") String token) {
+
+        Long userId = jwtUtil.validateToken(token.replace("Bearer ", ""));
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User user = userService.findUserById(userId);
+        meetingService.deleteMeeting(meetingId, user);
+        return ResponseEntity.ok().build();
+    }
 }
