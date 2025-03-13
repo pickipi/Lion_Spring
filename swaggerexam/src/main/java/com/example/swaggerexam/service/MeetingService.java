@@ -5,9 +5,9 @@ import com.example.swaggerexam.domain.MeetingMember;
 import com.example.swaggerexam.domain.User;
 import com.example.swaggerexam.repository.MeetingMemberRepository;
 import com.example.swaggerexam.repository.MeetingRepository;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +23,7 @@ public class MeetingService {
     @Transactional
     public Meeting createMeeting(Meeting meeting){
         // 모임 저장 로직
-
+        // -> Meeting 엔티티의 unique=true 옵션으로 중복값 체크할 필요없을것
         return meetingRepository.save(meeting);
     }
 
@@ -95,7 +95,6 @@ public class MeetingService {
     }
 
     // 모임 찾기 (ID 기준)
-    // ID로 모임 찾기
     @Transactional(readOnly = true)
     public Meeting findMeetingById(Long meetingId) {
         return meetingRepository.findById(meetingId)
@@ -121,5 +120,4 @@ public class MeetingService {
     public int getCurrentParticipants(Meeting meeting) {
         return meetingMemberRepository.countByMeeting(meeting);
     }
-
 }

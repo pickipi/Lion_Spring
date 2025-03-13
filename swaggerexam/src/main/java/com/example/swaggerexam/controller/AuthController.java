@@ -40,6 +40,7 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "로그인", description = "사용자가 모임 관리 서비스에 로그인합니다.")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto requestDto){
         String token = userService.login(requestDto.getEmail(), requestDto.getPassword());
@@ -49,6 +50,7 @@ public class AuthController {
         return ResponseEntity.ok(Collections.singletonMap("token", token));
     }
 
+    @Operation(summary = "로그아웃", description = "사용자가 모임 관리 서비스로부터 로그아웃합니다.")
     @PostMapping("/logout")
     public ResponseEntity<String> logout(
             @Parameter(description = "JWT 인증 토큰", required = true, example = "Bearer eyJhbGciOiJIUzI....")
