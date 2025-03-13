@@ -62,4 +62,22 @@ public class MeetingController {
         List<User> participants = meetingService.findParticipantsByMeeting(meeting);
         return ResponseEntity.ok(participants);
     }
+
+    // 모임 참가 API
+    @Operation(summary = "모임 참가", description = "사용자가 모임에 참가합니다.")
+    @PostMapping("/{meetingId}/join")
+    public ResponseEntity<String> joinMeeting(
+            @PathVariable("meetingId") Long meetingId,
+            @RequestHeader("Authorization") String token) {
+
+        Long userId = jwtUtil.validateToken(token.replace("Bearer ", ""));
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        User user = userService.findUserById(userId);
+        Meeting meeting = meetingService.findMeetingById(meetingId);
+        meetingService.joinMeeting(meeting, user);
+        return ResponseEntity.ok("모임 참가 완료!");
+    }
 }
