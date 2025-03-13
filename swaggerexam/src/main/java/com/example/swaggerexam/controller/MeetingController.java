@@ -1,0 +1,65 @@
+package com.example.swaggerexam.controller;
+
+import com.example.swaggerexam.domain.Meeting;
+import com.example.swaggerexam.domain.User;
+import com.example.swaggerexam.service.MeetingService;
+import com.example.swaggerexam.service.UserService;
+import com.example.swaggerexam.util.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+// 모임 생성/수정/삭제/참가 관리
+@RestController
+@RequestMapping("/meetings")
+@RequiredArgsConstructor
+@Tag(name = "Meeting", description = "모임 관련 API")
+public class MeetingController {
+    private final MeetingService meetingService;
+    private final JwtUtil jwtUtil;
+    private final UserService userService;
+
+    // 모임 생성 (로그인한 사용자만)
+    @Operation(
+            summary = "모임 생성",
+            description = "새로운 모임을 생성합니다.",
+            tags = {"Meeting"}
+    )
+    @PostMapping
+    public ResponseEntity<Meeting> createMeeting(
+            @RequestHeader("Authorization") String token,
+            @RequestBody Meeting meeting) {
+
+        Long userId = jwtUtil.validateToken(token.replace("Bearer ", ""));
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User user = userService.findUserById(userId);
+        meeting.setCreatedBy(user); // 모임 생성자 지정
+        Meeting savedMeeting = meetingService.createMeeting(meeting);
+        return ResponseEntity.ok(savedMeeting);
+    }
+
+    // 모든 모임 목록 조회
+    @Operation(summary = "모든 모임 목록 조회", description = "모든 모임들의 목록을 조회합니다.")
+    @GetMapping
+    public ResponseEntity<List<Meeting>> getMeetings() {
+        List<Meeting> meetings = meetingService.getAllMeetings();
+        return ResponseEntity.ok(meetings);
+    }
+
+    // 모임 참가자 목록 조회 API
+    @Operation(summary = "특정 모임 참가자 목록 조회", description = "특정 모임에 참여한 참가자들의 목록을 조회합니다.")
+    @GetMapping("/{meetingId}/participants")
+    public ResponseEntity<List<User>> getMeetingParticipants(@PathVariable("meetingId") Long meetingId) {
+        Meeting meeting = meetingService.findMeetingById(meetingId);
+        List<User> participants = meetingService.findParticipantsByMeeting(meeting);
+        return ResponseEntity.ok(participants);
+    }
+}
