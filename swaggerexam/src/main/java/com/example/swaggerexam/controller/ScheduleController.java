@@ -60,4 +60,21 @@ public class ScheduleController {
         Schedule savedSchedule = scheduleService.createSchedule(schedule, user);
         return ResponseEntity.ok(savedSchedule);
     }
+
+    // 일정 목록 조회
+    @Operation(summary = "특정 모임의 일정 조회", description = "특정 모임의 일정들을 조회합니다.")
+    @GetMapping
+    public ResponseEntity<List<Schedule>> getSchedules(@PathVariable("meetingId") Long meetingId) {
+        List<Schedule> schedules = scheduleService.findSchedulesByMeetingId(meetingId);
+        return ResponseEntity.ok(schedules);
+    }
+
+    // 일정 참가자 목록 조회
+    @Operation(summary = "특정 일정의 참가자 목록 조회", description = "특정 모임 일정의 참가자들 목록을 조회합니다.")
+    @GetMapping("/{scheduleId}/participants")
+    public ResponseEntity<List<User>> getScheduleParticipants(@PathVariable("scheduleId") Long scheduleId) {
+        Schedule schedule = scheduleService.findById(scheduleId);
+        List<User> participants = scheduleService.getScheduleParticipants(schedule);
+        return ResponseEntity.ok(participants);
+    }
 }
