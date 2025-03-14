@@ -95,4 +95,18 @@ public class ScheduleController {
         scheduleService.joinSchedule(schedule, user);
         return ResponseEntity.ok("일정 참가 완료!");
     }
+
+    // Todo: 일정 수정
+//    @Operation(summary = "일정 수정", description = "일정의 참가자 / 일정 / 일정 참가 여부를 수정합니다.")
+//    @PatchMapping("/{scheduleId}/status")
+//    public ResponseEntity<String> updateScheduleStatus(){
+//        return ResponseEntity.ok(null);
+//    }
+//
+    // Todo: 일정 탈퇴
+//    @Operation(summary = "일정 탈퇴", description = "사용자가 일정에서 탈퇴합니다.")
+//    @DeleteMapping("/{scheduleId}/leave")
+//    public ResponseEntity<String> leaveSchedule(){
+//        return ResponseEntity.ok(null);
+//    }
 }
