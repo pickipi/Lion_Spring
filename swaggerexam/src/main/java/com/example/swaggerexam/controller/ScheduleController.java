@@ -77,4 +77,22 @@ public class ScheduleController {
         List<User> participants = scheduleService.getScheduleParticipants(schedule);
         return ResponseEntity.ok(participants);
     }
+
+    // 일정 참가
+    @Operation(summary = "일정 참가", description = "사용자가 일정에 참가합니다.")
+    @PostMapping("/{scheduleId}/join")
+    public ResponseEntity<String> joinSchedule(
+            @PathVariable("scheduleId") Long scheduleId,
+            @RequestHeader("Authorization") String token) {
+
+        Long userId = jwtUtil.validateToken(token.replace("Bearer ", ""));
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        User user = userService.findUserById(userId);
+        Schedule schedule = scheduleService.findById(scheduleId);
+        scheduleService.joinSchedule(schedule, user);
+        return ResponseEntity.ok("일정 참가 완료!");
+    }
 }
