@@ -2,6 +2,7 @@ package com.example.swaggerexam.controller;
 
 import com.example.swaggerexam.domain.Meeting;
 import com.example.swaggerexam.domain.Schedule;
+import com.example.swaggerexam.domain.ScheduleStatus;
 import com.example.swaggerexam.domain.User;
 import com.example.swaggerexam.service.MeetingService;
 import com.example.swaggerexam.service.ScheduleService;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 // 일정 생성/참가/탈퇴/상태 변경
 @RestController
@@ -96,17 +98,43 @@ public class ScheduleController {
         return ResponseEntity.ok("일정 참가 완료!");
     }
 
-    // Todo: 일정 수정
-//    @Operation(summary = "일정 수정", description = "일정의 참가자 / 일정 / 일정 참가 여부를 수정합니다.")
-//    @PatchMapping("/{scheduleId}/status")
-//    public ResponseEntity<String> updateScheduleStatus(){
-//        return ResponseEntity.ok(null);
-//    }
-//
-    // Todo: 일정 탈퇴
-//    @Operation(summary = "일정 탈퇴", description = "사용자가 일정에서 탈퇴합니다.")
-//    @DeleteMapping("/{scheduleId}/leave")
-//    public ResponseEntity<String> leaveSchedule(){
-//        return ResponseEntity.ok(null);
-//    }
+    // 일정 수정
+    @Operation(summary = "일정 수정", description = "일정의 참가자 / 일정 / 일정 참가 여부를 수정합니다.")
+    @PatchMapping("/{scheduleId}/status")
+    public ResponseEntity<String> updateScheduleStatus(
+            @PathVariable("meetingId") Long meetingId,
+            @PathVariable("scheduleId") Long scheduleId,
+            @RequestHeader("Authorization") String token,
+            @RequestBody Map<String, String> request) {
+
+        Long userId = jwtUtil.validateToken(token.replace("Bearer ", ""));
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+        }
+
+        User user = userService.findUserById(userId);
+        Schedule schedule = scheduleService.findById(scheduleId);
+        ScheduleStatus newStatus = ScheduleStatus.valueOf(request.get("status").toUpperCase());
+
+        scheduleService.updateScheduleStatus(schedule, user, newStatus);
+        return ResponseEntity.ok("일정 업데이트 완료!");
+    }
+
+    // 일정 탈퇴
+    @Operation(summary = "일정 탈퇴", description = "사용자가 일정에서 탈퇴합니다.")
+    @DeleteMapping("/{scheduleId}/leave")
+    public ResponseEntity<String> leaveSchedule(
+            @PathVariable("scheduleId") Long scheduleId,
+            @RequestHeader("Authorization") String token) {
+
+        Long userId = jwtUtil.validateToken(token.replace("Bearer ", ""));
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
+        }
+
+        User user = userService.findUserById(userId);
+        Schedule schedule = scheduleService.findById(scheduleId);
+        scheduleService.leaveSchedule(schedule, user);
+        return ResponseEntity.ok("일정 탈퇴 완료!");
+    }
 }
